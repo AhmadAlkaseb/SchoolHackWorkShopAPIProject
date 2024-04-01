@@ -1,25 +1,46 @@
 package controllers;
 
 import daos.EventDAO;
+import dtos.EventDTO;
 import exceptions.APIException;
 import io.javalin.http.Handler;
 import persistence.model.Event;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class EventController {
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static String timestamp = dateFormat.format(new Date());
+
+    private static EventDTO createEventDTOFromEvent(Event event) {
+        return EventDTO.builder()
+                .id(event.getId())
+                .title(event.getTitle())
+                .description(event.getDescription())
+                .date(event.getDate())
+                .time(event.getTime())
+                .duration(event.getDuration())
+                .capacity(event.getCapacity())
+                .location(event.getLocation())
+                .instructor(event.getInstructor())
+                .price(event.getPrice())
+                .image(event.getImage())
+                .createdAt(event.getCreatedAt())
+                .updatedAt(event.getUpdatedAt())
+                .deletedAt(event.getDeletedAt())
+                .build();
+    }
 
     public static Handler create(EventDAO eventDAO) {
         return ctx -> {
             Event event = ctx.bodyAsClass(Event.class);
-
             if (event != null) {
                 Event createdEvent = (Event) eventDAO.create(event);
-                ctx.json(createdEvent);
+                ctx.json(createEventDTOFromEvent(createdEvent));
             } else {
                 throw new APIException(500, "Received data was incorrect. " + timestamp);
             }
@@ -31,7 +52,7 @@ public class EventController {
             int id = Integer.parseInt(ctx.pathParam("id"));
             Event foundEvent = (Event) eventDAO.getById(id);
             if (foundEvent != null) {
-                ctx.json(foundEvent);
+                ctx.json(createEventDTOFromEvent(foundEvent));
             } else {
                 throw new APIException(404, "The id you are looking for does not exist. " + timestamp);
             }
@@ -40,10 +61,15 @@ public class EventController {
 
     public static Handler readAll(EventDAO eventDAO) {
         return ctx -> {
-            if (eventDAO.readAll() != null) {
-                ctx.json(eventDAO.readAll());
+            List<Event> eventList = eventDAO.readAll();
+            if (eventList != null) {
+                List<EventDTO> eventDTOList = new ArrayList<>();
+                for (Event e : eventList) {
+                    eventDTOList.add(createEventDTOFromEvent(e));
+                }
+                ctx.json(eventDTOList);
             } else {
-                throw new APIException(404, "No events available . " + timestamp);
+                throw new APIException(404, "No events available. " + timestamp);
             }
         };
     }
@@ -56,14 +82,50 @@ public class EventController {
             Event foundEvent = (Event) eventDAO.getById(id);
 
             if (foundEvent != null) {
-                //Opdatere oplysningerne, men hvis oplysningen er null, så skal den ikke opdateres.
+                // Update the event details if they are not null or empty in the updatedEvent object
+                if (updatedEvent.getTitle() != null && !updatedEvent.getTitle().isEmpty()) {
+                    foundEvent.setTitle(updatedEvent.getTitle());
+                }
+                if (updatedEvent.getDescription() != null && !updatedEvent.getDescription().isEmpty()) {
+                    foundEvent.setDescription(updatedEvent.getDescription());
+                }
+                if (updatedEvent.getDate() != null) {
+                    foundEvent.setDate(updatedEvent.getDate());
+                }
+                if (updatedEvent.getTime() != null) {
+                    foundEvent.setTime(updatedEvent.getTime());
+                }
+                if (updatedEvent.getDuration() != 0.0) {
+                    foundEvent.setDuration(updatedEvent.getDuration());
+                }
+                if (updatedEvent.getCapacity() != 0.0) {
+                    foundEvent.setCapacity(updatedEvent.getCapacity());
+                }
+                if (updatedEvent.getLocation() != null && !updatedEvent.getLocation().isEmpty()) {
+                    foundEvent.setLocation(updatedEvent.getLocation());
+                }
+                if (updatedEvent.getInstructor() != null && !updatedEvent.getInstructor().isEmpty()) {
+                    foundEvent.setInstructor(updatedEvent.getInstructor());
+                }
                 if (updatedEvent.getPrice() != 0.0) {
                     foundEvent.setPrice(updatedEvent.getPrice());
+                }
+                if (updatedEvent.getImage() != null && !updatedEvent.getImage().isEmpty()) {
+                    foundEvent.setImage(updatedEvent.getImage());
+                }
+                if (updatedEvent.getCreatedAt() != null) {
+                    foundEvent.setCreatedAt(updatedEvent.getCreatedAt());
+                }
+                if (updatedEvent.getUpdatedAt() != null) {
+                    foundEvent.setUpdatedAt(updatedEvent.getUpdatedAt());
+                }
+                if (updatedEvent.getDeletedAt() != null) {
+                    foundEvent.setDeletedAt(updatedEvent.getDeletedAt());
                 }
                 eventDAO.update(foundEvent);
                 ctx.json(foundEvent);
             } else {
-                throw new APIException(404, "No events available . " + timestamp);
+                throw new APIException(404, "No event found with id: " + id);
             }
         };
     }
@@ -72,9 +134,9 @@ public class EventController {
         return ctx -> {
             int roomId = Integer.parseInt(ctx.pathParam("id"));
             Event foundEvent = (Event) eventDAO.getById(roomId);
-            int i = eventDAO.delete(roomId);
-            if (i != 0) {
-                ctx.status(200).json(foundEvent);
+            int deletedRow = eventDAO.delete(roomId);
+            if (deletedRow != 0) {
+                ctx.json(createEventDTOFromEvent(foundEvent));
             } else {
                 throw new APIException(404, "The id you are looking for does not exist. " + timestamp);
             }

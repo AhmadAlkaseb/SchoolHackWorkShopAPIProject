@@ -1,6 +1,8 @@
 package daos;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
 import persistence.model.Event;
 
 import java.util.List;
@@ -23,6 +25,9 @@ public class EventDAO extends AbstractDAO {
     }
 
     public List<Event> readAll() {
-        return null;
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<Event> query = em.createQuery("SELECT e FROM Event e", Event.class);
+            return query.getResultList();
+        }
     }
 }

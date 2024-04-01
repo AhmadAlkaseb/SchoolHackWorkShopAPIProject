@@ -1,5 +1,6 @@
 package persistence.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,8 +35,9 @@ public class User {
         INSTRUCTOR, STUDENT
     }
 
+    @JsonIgnore
     //Bi-directional
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name="events_users",
             joinColumns = @JoinColumn(name="user_id"),

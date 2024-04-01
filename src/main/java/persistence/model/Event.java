@@ -61,6 +61,6 @@ public class Event {
     }
 
     //Bi-directional
-    @ManyToMany(mappedBy = "events")
+    @ManyToMany(mappedBy = "events", fetch = FetchType.EAGER)
     public Set<User> users = new HashSet<>();
 }

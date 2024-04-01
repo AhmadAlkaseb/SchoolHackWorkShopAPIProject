@@ -1,0 +1,23 @@
+### Get all the events
+GET http://localhost:7007/api/events
+
+### Get a specific event by id
+GET http://localhost:7007/api/events/1
+
+### Post an event
+POST http://localhost:7007/api/events
+
+{
+"title": "jacck",
+"time":3
+}
+
+### Update an event
+PUT http://localhost:7007/api/events/5
+
+{
+"title": "Ahmad"
+}
+
+### Delete an event by id
+DELETE http://localhost:7007/api/events/4

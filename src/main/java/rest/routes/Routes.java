@@ -7,11 +7,11 @@ import persistence.config.HibernateConfig;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
-public class EventRoutes {
+public class Routes {
 
     EventDAO eventDAO = EventDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
 
-    public EndpointGroup roomRoutes() {
+    public EndpointGroup eventRoutes() {
         return () -> {
             post("/events", EventController.create(eventDAO));
             get("/events", EventController.readAll(eventDAO));
