@@ -34,6 +34,19 @@ public class User {
     }
 
     //Bi-directional
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name="event_users",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
     private Set<Event> events = new HashSet<>();
+
+    public void addEvent(Event event){
+        if(event != null){
+            events.add(event);
+            event.users.add(this);
+        }
+    }
+
 }
