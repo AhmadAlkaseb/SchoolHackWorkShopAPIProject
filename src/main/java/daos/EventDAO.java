@@ -10,7 +10,6 @@ public class EventDAO extends AbstractDAO {
     public EventDAO(EntityManagerFactory emf, Class<Event> entityClass) {
         super(emf, entityClass);
     }
-
     public static EventDAO getInstance(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
