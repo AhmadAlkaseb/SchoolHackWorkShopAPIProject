@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,9 +35,9 @@ public class User {
     }
 
     //Bi-directional
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name="event_users",
+            name="events_users",
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id")
     )
@@ -49,4 +50,13 @@ public class User {
         }
     }
 
+    @Override
+    public String toString() {
+        return "User - " +
+                "id = " + id +
+                ", name = " + name +
+                ", email = " + email +
+                ", password = " + password +
+                ", phone = " + phone;
+    }
 }

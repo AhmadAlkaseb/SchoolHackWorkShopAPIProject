@@ -81,7 +81,6 @@ public class HibernateConfig {
         // configuration.addAnnotatedClass(<YOUR ENTITY>.class);
         configuration.addAnnotatedClass(Event.class);
         configuration.addAnnotatedClass(User.class);
-        configuration.addAnnotatedClass(EventUser.class);
     }
 
     //Singleton princippet
