@@ -1,0 +1,42 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Event{
+Integer id primary key
+String title
+String description
+LocalDate date
+ZonedDateTime time
+int duration
+int capacity
+String location
+String instructor
+double price
+enum Category
+String image
+enum Status
+LocalDate createAt
+LocalDate updatedAt
+LocalDate deletedAt
+}
+
+class User{
+Integer id primary key
+String name
+String email
+String password
+int phone
+enum Role
+}
+
+class EventUser {
+int event_id foreign key
+int user_id foreign key
+}
+
+' Relations
+User " * " -- " 1 " EventUser: " Has"
+Event " * " -- " 1 " EventUser: " Has"
+
+hide methods
+@enduml
