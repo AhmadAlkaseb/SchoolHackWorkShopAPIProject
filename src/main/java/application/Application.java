@@ -5,7 +5,6 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import persistence.config.HibernateConfig;
 import persistence.model.Event;
-import persistence.model.EventUser;
 import persistence.model.User;
 
 import java.time.LocalDate;

@@ -7,7 +7,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import persistence.model.Event;
-import persistence.model.EventUser;
 import persistence.model.User;
 
 import java.util.Properties;
