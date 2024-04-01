@@ -24,15 +24,6 @@ public class HibernateConfig {
 
             Properties props = new Properties();
 
-            /*
-            DB_PASSWORD=dxjYEnBgMQYWC6ZyL6wk;
-            DB_URL=jdbc:postgresql://164.90.190.168:5432/schoolhackworkshopapi;
-            DB_USER=postgres
-             */
-            //String userName = System.getenv("DB_USER");
-            //System.getenv("DB_PASSWORD");
-            //System.getenv("DB_URL");
-
             props.put("hibernate.connection.url", System.getenv("DB_URL"));
             props.put("hibernate.connection.username", System.getenv("DB_USER"));
             props.put("hibernate.connection.password", System.getenv("DB_PASSWORD"));
