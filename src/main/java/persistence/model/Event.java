@@ -62,5 +62,5 @@ public class Event {
 
     //Bi-directional
     @ManyToMany(mappedBy = "events")
-    private Set<User> users = new HashSet<>();
+    public Set<User> users = new HashSet<>();
 }
