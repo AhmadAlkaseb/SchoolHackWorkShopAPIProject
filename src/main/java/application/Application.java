@@ -3,6 +3,7 @@ package application;
 import jakarta.persistence.EntityManagerFactory;
 import persistence.config.HibernateConfig;
 import rest.config.ApplicationConfig;
+import rest.routes.AuthenticationRoutes;
 import rest.routes.EventRoutes;
 
 public class Application {
@@ -13,6 +14,7 @@ public class Application {
         app.initiateServer()
                 .startServer(7007)
                 .setExceptionHandlers()
-                .setRoute(eventRoutes.eventRoutes());
+                .setRoute(eventRoutes.eventRoutes())
+                .setRoute(AuthenticationRoutes.getAuthRoutes());
     }
 }

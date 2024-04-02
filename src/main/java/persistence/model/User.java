@@ -18,11 +18,14 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String name;
-    String email;
-    String password;
-    int phone;
+    private int id;
+    private String name;
+    //todo: email should be unique
+    private String email;
+    private String password;
+    private int phone;
+    //private Set<Role> roles;
+
 
     public User(String name, String email, String password, int phone) {
         this.name = name;
@@ -37,7 +40,8 @@ public class User {
 
     enum Role {
         INSTRUCTOR,
-        STUDENT
+        STUDENT,
+        ADMIN
     }
 
     @JsonIgnore

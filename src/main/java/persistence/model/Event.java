@@ -24,6 +24,7 @@ public class Event {
     private Integer id;
 
     private String title;
+    //todo: ville give mening at bruge predefinerede værdier
     private String category;
     private String description;
     private LocalDate date;
@@ -31,6 +32,7 @@ public class Event {
     private int duration;
     private int capacity;
     private String location;
+    //todo: burde det ikke være en User?
     private String instructor;
     private double price;
     private String image;
