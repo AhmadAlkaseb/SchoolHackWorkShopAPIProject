@@ -34,6 +34,7 @@ public class Event {
     private String instructor;
     private double price;
     private String image;
+    private String status;
     private LocalDate createdAt;
     private LocalDate updatedAt;
     private LocalDate deletedAt;

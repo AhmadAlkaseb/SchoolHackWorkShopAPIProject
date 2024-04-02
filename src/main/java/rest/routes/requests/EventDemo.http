@@ -24,3 +24,6 @@ DELETE http://localhost:7007/api/events/4
 
 ### Filter by category
 GET http://localhost:7007/api/events/categories/music
+
+### Filter by status
+GET http://localhost:7007/api/events/status/ACTIVE

@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EventController {
 
@@ -20,7 +21,6 @@ public class EventController {
         return EventDTO.builder()
                 .id(event.getId())
                 .title(event.getTitle())
-                .category(event.getCategory())
                 .description(event.getDescription())
                 .date(event.getDate())
                 .time(event.getTime())
@@ -29,7 +29,9 @@ public class EventController {
                 .location(event.getLocation())
                 .instructor(event.getInstructor())
                 .price(event.getPrice())
+                .category(event.getCategory())
                 .image(event.getImage())
+                .status(event.getStatus())
                 .createdAt(event.getCreatedAt())
                 .updatedAt(event.getUpdatedAt())
                 .deletedAt(event.getDeletedAt())
@@ -83,7 +85,6 @@ public class EventController {
             Event foundEvent = (Event) eventDAO.getById(id);
 
             if (foundEvent != null) {
-                // Update the event details if they are not null or empty in the updatedEvent object
                 if (updatedEvent.getTitle() != null && !updatedEvent.getTitle().isEmpty()) {
                     foundEvent.setTitle(updatedEvent.getTitle());
                 }
@@ -147,17 +148,44 @@ public class EventController {
     public static Handler readByCategory(EventDAO eventDAO) {
         return ctx -> {
             String category = ctx.pathParam("category");
-            List<Event> foundEvents = eventDAO.getAllByCategory(category);
-            if (foundEvents != null) {
-                List<EventDTO> eventDTOList = new ArrayList<>();
-                for (Event e : foundEvents) {
-                    eventDTOList.add(createEventDTOFromEvent(e));
-                }
-                ctx.json(eventDTOList);
+            List<Event> foundEvents = eventDAO.readAll();
+
+            List<Event> filteredEvents = foundEvents
+                    .stream()
+                    .filter(event -> event.getCategory().equals(category))
+                    .collect(Collectors.toList());
+
+            if (!filteredEvents.isEmpty()) {
+                ctx.json(covertEventListToEventDTOList(filteredEvents));
             } else {
                 throw new APIException(404, "The category you are looking for does not exist. " + timestamp);
             }
         };
     }
-}
 
+    public static Handler readByStatus(EventDAO eventDAO) {
+        return ctx -> {
+            String status = ctx.pathParam("status");
+            List<Event> foundEvents = eventDAO.readAll();
+
+            List<Event> filteredEvents = foundEvents
+                    .stream()
+                    .filter(event -> event.getStatus().equals(status))
+                    .collect(Collectors.toList());
+
+            if (!filteredEvents.isEmpty()) {
+                ctx.json(covertEventListToEventDTOList(filteredEvents));
+            } else {
+                throw new APIException(404, "The status you are looking for does not exist. " + timestamp);
+            }
+        };
+    }
+
+    private static List<EventDTO> covertEventListToEventDTOList(List<Event> eventList) {
+        List<EventDTO> eventDTOList = new ArrayList<>();
+        for (Event e : eventList) {
+            eventDTOList.add(createEventDTOFromEvent(e));
+        }
+        return eventDTOList;
+    }
+}
