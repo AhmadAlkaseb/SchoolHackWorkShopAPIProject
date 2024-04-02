@@ -2,10 +2,7 @@ package persistence.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -17,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString
 @Table(name = "events")
 public class Event {
 
@@ -26,6 +24,7 @@ public class Event {
     private Integer id;
 
     private String title;
+    private String category;
     private String description;
     private LocalDate date;
     private ZonedDateTime time;
@@ -39,8 +38,9 @@ public class Event {
     private LocalDate updatedAt;
     private LocalDate deletedAt;
 
-    public Event(String title, String description, LocalDate date, ZonedDateTime time, int duration, int capacity, String location, String instructor, double price, String image) {
+    public Event(String title, String category, String description, LocalDate date, ZonedDateTime time, int duration, int capacity, String location, String instructor, double price, String image, LocalDate createdAt, LocalDate updatedAt, LocalDate deletedAt) {
         this.title = title;
+        this.category = category;
         this.description = description;
         this.date = date;
         this.time = time;
@@ -50,6 +50,9 @@ public class Event {
         this.instructor = instructor;
         this.price = price;
         this.image = image;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
     }
 
     enum Category {

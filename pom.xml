@@ -107,8 +107,8 @@
             <version>5.3.0</version>
             <scope>test</scope>
         </dependency>
+        <!-- Json datatype formater from LocalDate to String -->
         <dependency>
-            <!-- Json datatype formater from LocalDate to String -->
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.15.0</version>

@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 public class EventDTO {
     private Integer id;
     private String title;
+    private String category;
     private String description;
     private LocalDate date;
     private ZonedDateTime time;

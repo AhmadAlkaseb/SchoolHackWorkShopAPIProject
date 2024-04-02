@@ -8,7 +8,7 @@ import persistence.config.HibernateConfig;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
-public class Routes {
+public class EventRoutes {
 
     EventDAO eventDAO = EventDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
 
@@ -56,6 +56,15 @@ public class Routes {
                 delete("/{id}", ctx -> {
                     try {
                         EventController.delete(eventDAO).handle(ctx);
+                    } catch (APIException e) {
+                        ctx.status(e.getStatusCode()).result(e.getMessage());
+                    }
+                });
+
+                // Filter events by category
+                get("/categories/{category}", ctx -> {
+                    try {
+                        EventController.readByCategory(eventDAO).handle(ctx);
                     } catch (APIException e) {
                         ctx.status(e.getStatusCode()).result(e.getMessage());
                     }

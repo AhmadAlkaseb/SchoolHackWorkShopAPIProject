@@ -20,6 +20,7 @@ public class EventController {
         return EventDTO.builder()
                 .id(event.getId())
                 .title(event.getTitle())
+                .category(event.getCategory())
                 .description(event.getDescription())
                 .date(event.getDate())
                 .time(event.getTime())
@@ -139,6 +140,22 @@ public class EventController {
                 ctx.json(createEventDTOFromEvent(foundEvent));
             } else {
                 throw new APIException(404, "The id you are looking for does not exist. " + timestamp);
+            }
+        };
+    }
+
+    public static Handler readByCategory(EventDAO eventDAO) {
+        return ctx -> {
+            String category = ctx.pathParam("category");
+            List<Event> foundEvents = eventDAO.getAllByCategory(category);
+            if (foundEvents != null) {
+                List<EventDTO> eventDTOList = new ArrayList<>();
+                for (Event e : foundEvents) {
+                    eventDTOList.add(createEventDTOFromEvent(e));
+                }
+                ctx.json(eventDTOList);
+            } else {
+                throw new APIException(404, "The category you are looking for does not exist. " + timestamp);
             }
         };
     }

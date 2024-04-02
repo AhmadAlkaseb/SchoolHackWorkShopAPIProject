@@ -21,3 +21,6 @@ PUT http://localhost:7007/api/events/5
 
 ### Delete an event by id
 DELETE http://localhost:7007/api/events/4
+
+### Filter by category
+GET http://localhost:7007/api/events/categories/music

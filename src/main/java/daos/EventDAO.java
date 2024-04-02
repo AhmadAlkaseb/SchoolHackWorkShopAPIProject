@@ -30,4 +30,12 @@ public class EventDAO extends AbstractDAO {
             return query.getResultList();
         }
     }
+
+    public List<Event> getAllByCategory(String category) {
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<Event> query = em.createQuery("SELECT e FROM Event e WHERE e.category = :category", Event.class);
+            query.setParameter("category", category);
+            return query.getResultList();
+        }
+    }
 }
