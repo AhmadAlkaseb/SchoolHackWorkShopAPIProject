@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,26 +27,31 @@ public class User {
     public User(String name, String email, String password, int phone) {
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.phone = phone;
     }
 
+    public boolean verifyPassword(String pw) {
+        return BCrypt.checkpw(pw, this.password);
+    }
+
     enum Role {
-        INSTRUCTOR, STUDENT
+        INSTRUCTOR,
+        STUDENT
     }
 
     @JsonIgnore
     //Bi-directional
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name="events_users",
-            joinColumns = @JoinColumn(name="user_id"),
+            name = "events_users",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id")
     )
     private Set<Event> events = new HashSet<>();
 
-    public void addEvent(Event event){
-        if(event != null){
+    public void addEvent(Event event) {
+        if (event != null) {
             events.add(event);
             event.users.add(this);
         }
