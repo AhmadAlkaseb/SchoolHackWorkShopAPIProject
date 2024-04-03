@@ -2,6 +2,7 @@ package daos;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import persistence.model.User;
 
 public abstract class AbstractDAO<T> {
 

@@ -8,6 +8,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import persistence.model.Event;
 import persistence.model.Registration;
+import persistence.model.Role;
 import persistence.model.User;
 
 import java.util.Properties;
@@ -82,6 +83,7 @@ public class HibernateConfig {
         configuration.addAnnotatedClass(Event.class);
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Registration.class);
+        configuration.addAnnotatedClass(Role.class);
     }
 
     //Singleton princippet

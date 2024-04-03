@@ -32,28 +32,23 @@ public class User {
     @Column(nullable = false)
     private int phone;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
+    @Column(nullable = false, columnDefinition = "student")
+    @ManyToMany
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "rolename", referencedColumnName = "rolename"))
+    private Set<Role> roles = new HashSet<>();
 
-    public enum Role {
-        instructor,
-        student,
-        admin
-    }
-
-    public User(String name, String email, String password, int phone, Role role) {
+    public User(String name, String email, String password, int phone) {
         this.name = name;
         this.email = email;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.phone = phone;
-        this.role = role;
     }
 
     public boolean verifyPassword(String pw) {
         return BCrypt.checkpw(pw, this.password);
     }
-
 
     @JsonIgnore
     //Bi-directional
@@ -68,16 +63,32 @@ public class User {
     public void addEvent(Event event) {
         if (event != null) {
             events.add(event);
-            event.users.add(this);
+            event.getUsers().add(this);
         }
     }
+
 
     public void removeEvent(Event event) {
         if (event != null) {
             events.remove(event);
-            event.users.remove(this);
+            event.getUsers().remove(this);
         }
     }
+
+
+    public void addRole(Role role){
+        if(role != null){
+            roles.add(role);
+            role.getUsers().add(this);
+        }
+    }
+
+    public Set<String> getRolesAsStrings(){
+        Set<String> roleStringSet = new HashSet<>();
+        this.getRoles().forEach(role -> roleStringSet.add(role.toString()));
+        return roleStringSet;
+    }
+
 
     @Override
     public String toString() {

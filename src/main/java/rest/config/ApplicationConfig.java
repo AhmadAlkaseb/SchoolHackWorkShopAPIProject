@@ -2,6 +2,7 @@ package rest.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import controllers.AuthController;
 import dtos.UserDTO;
 import exceptions.APIException;
 import io.javalin.Javalin;
@@ -87,10 +88,10 @@ public class ApplicationConfig {
                             .json(om.createObjectNode()
                                     .put("msg", "Not authorized. No username were added from the token"));
 
-                /*if (securityController.authorize(user, allowedRoles))
+                if (AuthController.authorize(user, allowedRoles))
                     handler.handle(ctx);
                 else
-                    throw new APIException(HttpStatus.FORBIDDEN.getCode(), "Unauthorized with roles: " + allowedRoles);*/
+                    throw new APIException(HttpStatus.FORBIDDEN.getCode(), "Unauthorized with roles: " + allowedRoles);
             });
         });
         return instance;

@@ -1,0 +1,6 @@
+POST http://localhost:7007/api/auth/login
+
+{
+"email":"lasse@lasse.dk",
+"password":"hanni"
+}
