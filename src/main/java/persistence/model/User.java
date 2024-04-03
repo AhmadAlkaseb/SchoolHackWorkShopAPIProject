@@ -38,7 +38,8 @@ public class User {
 
     public enum Role {
         instructor,
-        student
+        student,
+        admin
     }
 
     public User(String name, String email, String password, int phone, Role role) {
