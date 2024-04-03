@@ -50,13 +50,13 @@ STATUS:
 
     Events
     HTTP method | Rest Ressource                    | Role        | Response body | Exception & status  | Comment
-    GET           api/events                          student       Link            APIException & 404    Retrieve all events
-    GET           api/events/{id}                     student       Link            APIException & 404    Retrieve an event by id
-    GET           api/events/categories/{category}    student       Link            APIException & 404    Retrieve an event by category
-    GET           api/events/status/{status}          student       Link            APIException & 404    Retrieve an event by status
-    POST          api/events                          instructor    Link            APIException & 500    Add a new event
-    PUT           api/events/{id}                     instructor    Link            APIException & 404    Update an event by id
-    DELETE        api/events/{id}                     admin         Link            APIException & 404    Delete an event by id
+    GET           api/events                          student                   APIException & 404    Retrieve all events
+    GET           api/events/{id}                     student                   APIException & 404    Retrieve an event by id
+    GET           api/events/categories/{category}    student                   APIException & 404    Retrieve an event by category
+    GET           api/events/status/{status}          student                   APIException & 404    Retrieve an event by status
+    POST          api/events                          instructor                APIException & 500    Add a new event
+    PUT           api/events/{id}                     instructor                APIException & 404    Update an event by id
+    DELETE        api/events/{id}                     admin                     APIException & 404    Delete an event by id
 
     Users
     HTTP method | Rest Ressource                    | Role           | Response body | Exception & status  | Comment
