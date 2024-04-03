@@ -2,28 +2,38 @@
 GET http://localhost:7007/api/events
 
 ### Get a specific event by id
-GET http://localhost:7007/api/events/1
+GET http://localhost:7007/api/events/8
 
 ### Post an event
 POST http://localhost:7007/api/events
 
 {
-"title": "jacck",
-"time":3
+"title": "Introduction to Python Programming",
+  "category": "workshop",
+  "description": "Learn Python basics and fundamentals",
+  "date": "2024-05-20",
+  "time": "09:00",
+  "duration": 4,
+  "capacity": 50,
+  "location": "Conference Room B",
+  "instructor": "Alice Smith",
+  "price": 29.99,
+  "image": "python_workshop.jpg",
+  "status": "active"
 }
 
 ### Update an event
-PUT http://localhost:7007/api/events/5
+PUT http://localhost:7007/api/events/9
 
 {
 "title": "Ahmad"
 }
 
 ### Delete an event by id
-DELETE http://localhost:7007/api/events/4
+DELETE http://localhost:7007/api/events/9
 
 ### Filter by category
-GET http://localhost:7007/api/events/categories/music
+GET http://localhost:7007/api/events/categories/talk
 
 ### Filter by status
-GET http://localhost:7007/api/events/status/ACTIVE
+GET http://localhost:7007/api/events/status/active

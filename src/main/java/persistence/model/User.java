@@ -18,33 +18,47 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String name;
-    String email;
-    String password;
-    int phone;
+    private int id;
 
-    public User(String name, String email, String password, int phone) {
+    @Column (nullable = false)
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    private int phone;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    public enum Role {
+        instructor,
+        student
+    }
+
+    public User(String name, String email, String password, int phone, Role role) {
         this.name = name;
         this.email = email;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.phone = phone;
+        this.role = role;
     }
 
     public boolean verifyPassword(String pw) {
         return BCrypt.checkpw(pw, this.password);
     }
 
-    enum Role {
-        INSTRUCTOR,
-        STUDENT
-    }
 
     @JsonIgnore
     //Bi-directional
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "events_users",
+            name = "registrations",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id")
     )

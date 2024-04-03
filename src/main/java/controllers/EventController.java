@@ -147,27 +147,29 @@ public class EventController {
 
     public static Handler readByCategory(EventDAO eventDAO) {
         return ctx -> {
-            String category = ctx.pathParam("category");
-            List<Event> foundEvents = eventDAO.readAll();
+            String categoryStr = ctx.pathParam("category");
+            Event.Category category = Event.Category.valueOf(categoryStr.toLowerCase());
 
+            List<Event> foundEvents = eventDAO.readAll();
             List<Event> filteredEvents = foundEvents
                     .stream()
-                    .filter(event -> event.getCategory().equals(category))
+                    .filter(event -> event.getCategory() == category)
                     .collect(Collectors.toList());
 
             if (!filteredEvents.isEmpty()) {
                 ctx.json(covertEventListToEventDTOList(filteredEvents));
             } else {
-                throw new APIException(404, "The category you are looking for does not exist. " + timestamp);
+                throw new APIException(404, "No events found for the category: " + categoryStr);
             }
         };
     }
 
     public static Handler readByStatus(EventDAO eventDAO) {
         return ctx -> {
-            String status = ctx.pathParam("status");
-            List<Event> foundEvents = eventDAO.readAll();
+            String statusStr = ctx.pathParam("status");
+            Event.Status status = Event.Status.valueOf(statusStr.toLowerCase());
 
+            List<Event> foundEvents = eventDAO.readAll();
             List<Event> filteredEvents = foundEvents
                     .stream()
                     .filter(event -> event.getStatus().equals(status))
