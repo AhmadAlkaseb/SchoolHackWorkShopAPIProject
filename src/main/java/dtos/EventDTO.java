@@ -3,6 +3,7 @@ package dtos;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -16,13 +17,14 @@ public class EventDTO {
     private String category;
     private String description;
     private LocalDate date;
-    private ZonedDateTime time;
-    private int duration;
+    private LocalTime time;
+    private double duration;
     private int capacity;
     private String location;
     private String instructor;
     private double price;
     private String image;
+    private String status;
     private LocalDate createdAt;
     private LocalDate updatedAt;
     private LocalDate deletedAt;
