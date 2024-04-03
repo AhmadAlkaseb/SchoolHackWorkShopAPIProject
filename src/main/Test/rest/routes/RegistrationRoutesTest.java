@@ -92,14 +92,18 @@ class RegistrationRoutesTest {
     @AfterEach
     void tearDownAfterEach() {
         try (EntityManager em = emf.createEntityManager()) {
-            em.getTransaction().begin();
+//            em.getTransaction().begin();
+//
+//            // Antager at der er en metode til at slette data fra specifikke tabeller
+//            em.createQuery("DELETE FROM Registration").executeUpdate();
+//            em.createQuery("DELETE FROM Event").executeUpdate();
+//            em.createQuery("DELETE FROM User").executeUpdate();
+//            em.getTransaction().commit();
 
-            // Antager at der er en metode til at slette data fra specifikke tabeller
-            em.createQuery("DELETE FROM Registration").executeUpdate();
-            em.createQuery("DELETE FROM Event").executeUpdate();
-            em.createQuery("DELETE FROM User").executeUpdate();
+            em.getTransaction().rollback();
+            em.close();
 
-            em.getTransaction().commit();
+
         }
     }
 
@@ -109,7 +113,7 @@ class RegistrationRoutesTest {
 
         int expectedSize = 8; //der er 8 registreringer i beforeAll
         int expectedUserId = user1.getId();
-        String expectedEventName = event2.getDescription();
+        String expectedEventName = event1.getDescription();
 
         RestAssured
                 .given()
