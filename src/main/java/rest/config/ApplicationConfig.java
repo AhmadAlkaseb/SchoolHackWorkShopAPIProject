@@ -2,8 +2,14 @@ package rest.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import dtos.UserDTO;
+import exceptions.APIException;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
+import io.javalin.http.HttpStatus;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ApplicationConfig {
     private ObjectMapper om = new ObjectMapper();
@@ -60,7 +66,7 @@ public class ApplicationConfig {
         return instance;
     }
 
-    /*public ApplicationConfig checkSecurityRoles() {
+    public ApplicationConfig checkSecurityRoles() {
         // Check roles on the user (ctx.attribute("username") and compare with permittedRoles using securityController.authorize()
         app.updateConfig(config -> {
 
@@ -81,14 +87,14 @@ public class ApplicationConfig {
                             .json(om.createObjectNode()
                                     .put("msg", "Not authorized. No username were added from the token"));
 
-                if (securityController.authorize(user, allowedRoles))
+                /*if (securityController.authorize(user, allowedRoles))
                     handler.handle(ctx);
                 else
-                    throw new ApiException(HttpStatus.FORBIDDEN.getCode(), "Unauthorized with roles: " + allowedRoles);
+                    throw new APIException(HttpStatus.FORBIDDEN.getCode(), "Unauthorized with roles: " + allowedRoles);*/
             });
         });
         return instance;
-    }*/
+    }
 
 
     public void stopServer() {
