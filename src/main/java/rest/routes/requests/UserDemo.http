@@ -2,20 +2,22 @@
 GET http://localhost:7007/api/users
 
 ### Get a single user.
-GET http://localhost:7007/api/users/2
+GET http://localhost:7007/api/users/3
 
 ### Create a new user
 POST http://localhost:7007/api/users
 
 {
 "name": "Hanni",
-"email": "hanni@hanni.dk",
+"email": "hanni@ahmad.dk",
 "password" : "hanni",
-"phone": 53702510
+"phone": 53702510,
+"role": "student"
+
 }
 
 ### Update a user
-PUT http://localhost:7007/api/users/1
+PUT http://localhost:7007/api/users/3
 
 {
 "name": "Emil"

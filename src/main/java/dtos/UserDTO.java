@@ -15,6 +15,7 @@ public class UserDTO
     private String email;
     private String password;
     private int phone;
+    private String role;
 
 
     public UserDTO(User user)
@@ -24,5 +25,6 @@ public class UserDTO
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.phone = user.getPhone();
+        this.role = user.getRole().toString().toLowerCase();
     }
 }

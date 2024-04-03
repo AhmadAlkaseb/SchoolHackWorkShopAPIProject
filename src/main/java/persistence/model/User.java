@@ -19,26 +19,40 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column (nullable = false)
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private int phone;
 
-    public User(String name, String email, String password, int phone) {
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    public enum Role {
+        instructor,
+        student
+    }
+
+    public User(String name, String email, String password, int phone, Role role) {
         this.name = name;
         this.email = email;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.phone = phone;
+        this.role = role;
     }
 
     public boolean verifyPassword(String pw) {
         return BCrypt.checkpw(pw, this.password);
     }
 
-    enum Role {
-        INSTRUCTOR,
-        STUDENT
-    }
 
     @JsonIgnore
     //Bi-directional
