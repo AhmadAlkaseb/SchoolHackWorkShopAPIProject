@@ -1,0 +1,5 @@
+### Get all the registrations
+GET http://localhost:7007/api/registrations
+
+### Get registration by ID
+GET http://localhost:7007/api/registrations/1

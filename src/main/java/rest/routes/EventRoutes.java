@@ -1,7 +1,9 @@
 package rest.routes;
 
 import controllers.EventController;
+import controllers.RegistrationController;
 import daos.EventDAO;
+import daos.RegistrationDAO;
 import exceptions.APIException;
 import io.javalin.apibuilder.EndpointGroup;
 import persistence.config.HibernateConfig;
@@ -77,47 +79,4 @@ public class EventRoutes {
             });
         });
     }
-
-
-    public EndpointGroup registrationRoutes() {
-        return () -> path("/events", () -> {
-
-            // GET /registrations/:id: Get all registrations for an event.
-            post("/", ctx -> {
-                try {
-                    EventController.create(eventDAO).handle(ctx);
-                } catch (APIException e) {
-                    ctx.status(e.getStatusCode()).result(e.getMessage());
-                }
-            });
-
-            // GET /registration/:id: Get a single registration.
-            get("/", ctx -> {
-                try {
-                    EventController.readAll(eventDAO).handle(ctx);
-                } catch (APIException e) {
-                    ctx.status(e.getStatusCode()).result(e.getMessage());
-                }
-            });
-
-            // POST /registrations/:id: Register a user for an event.
-            get("/{id}", ctx -> {
-                try {
-                    EventController.readById(eventDAO).handle(ctx);
-                } catch (APIException e) {
-                    ctx.status(e.getStatusCode()).result(e.getMessage());
-                }
-            });
-
-            // DELETE /registrations/:id: Cancel a user's registration for an event.
-            put("/{id}", ctx -> {
-                try {
-                    EventController.update(eventDAO).handle(ctx);
-                } catch (APIException e) {
-                    ctx.status(e.getStatusCode()).result(e.getMessage());
-                }
-            });
-        });
-    }
-
 }

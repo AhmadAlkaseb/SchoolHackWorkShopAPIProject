@@ -25,8 +25,8 @@ public class RegistrationDAO extends AbstractDAO{
         return instance;
     }
 
-    //registrations only ID's
-//    public static List<Registration> readAll2() {
+//    registrations only ID's
+//    public List<Registration> readAll2() {
 //        try (EntityManager em = emf.createEntityManager()) {
 //            TypedQuery<Registration> query = em.createQuery("SELECT r FROM Registration r", Registration.class);
 //            return query.getResultList();
@@ -34,17 +34,23 @@ public class RegistrationDAO extends AbstractDAO{
 //    }
 
 
-    public static List<RegistrationDTO> readAll() {
+//    public List<RegistrationDTO> readAll() {
+//        try (EntityManager em = emf.createEntityManager()) {
+//
+//            String jpql = "SELECT new dtos.RegistrationDTO(r.id, u.id, u.name, e.id, e.description) " +
+//                    "FROM Registration r " +
+//                    "JOIN r.user u " +
+//                    "JOIN r.event e";
+//
+//            TypedQuery<RegistrationDTO> query = em.createQuery(jpql, RegistrationDTO.class);
+//            return query.getResultList();
+//        }
+//    }
+
+    public List<Registration> readAll() {
         try (EntityManager em = emf.createEntityManager()) {
-
-            String jpql = "SELECT new dtos.RegistrationDTO(r.id, u.id, u.name, e.id, e.description) " +
-                    "FROM Registration r " +
-                    "JOIN r.user u " +
-                    "JOIN r.event e";
-
-            TypedQuery<RegistrationDTO> query = em.createQuery(jpql, RegistrationDTO.class);
+            TypedQuery<Registration> query = em.createQuery("SELECT r From Registration r", Registration.class);
             return query.getResultList();
         }
     }
-
 }
