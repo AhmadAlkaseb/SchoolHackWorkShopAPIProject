@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "events_users")
-public class EventUser {
+@Table(name = "registrations")
+public class Registration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,7 +25,7 @@ public class EventUser {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public EventUser(Event event, User user) {
+    public Registration(Event event, User user) {
         this.event = event;
         this.user = user;
     }

@@ -19,33 +19,46 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column (nullable = false)
     private String name;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private int phone;
 
-    public User(String name, String email, String password, int phone) {
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    public enum Role {
+        instructor,
+        student,
+        admin
+    }
+
+    public User(String name, String email, String password, int phone, Role role) {
         this.name = name;
         this.email = email;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.phone = phone;
+        this.role = role;
     }
 
     public boolean verifyPassword(String pw) {
         return BCrypt.checkpw(pw, this.password);
     }
 
-    enum Role {
-        INSTRUCTOR,
-        STUDENT,
-        ADMIN
-    }
-
     @JsonIgnore
     //Bi-directional
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "events_users",
+            name = "registrations",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "event_id")
     )
