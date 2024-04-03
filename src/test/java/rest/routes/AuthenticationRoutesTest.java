@@ -33,9 +33,9 @@ class AuthenticationRoutesTest {
         UserDTO user = new UserDTO("lasse@mail.com","1234abcd");
         given()
                 .contentType(ContentType.JSON)
-                .body(user);
+                .body(user).
         when()
-                .get("/login");
+                .get("/login").
         then()
                 .body("name", equalTo("Lasse"));
     }

@@ -32,4 +32,16 @@ public class AuthDAO extends AbstractDAO {
             return result;
         }
     }
+    public boolean doesUserExist(String email){
+        try(var em = emf.createEntityManager()){
+            TypedQuery<String> query = em.createQuery("select u.email from User u where email = ?1", String.class);
+            query.setParameter(1,email);
+            String result = query.getSingleResult();
+            if(result == null){
+                throw new EntityNotFoundException("No user with that email exist");
+            } else{
+                return true;
+            }
+        }
+    }
 }

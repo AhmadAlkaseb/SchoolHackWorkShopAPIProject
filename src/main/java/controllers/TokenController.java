@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 public class TokenController {
     public static String createToken(UserDTO user){
-        //todo: set env variables
         String ISSUER = System.getenv("ISSUER");
         String TOKEN_EXPIRE_TIME = System.getenv("TOKEN_EXPIRE_TIME");
         String SECRET_KEY = System.getenv("SECRET_KEY");

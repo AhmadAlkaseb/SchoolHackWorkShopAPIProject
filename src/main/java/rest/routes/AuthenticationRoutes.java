@@ -26,6 +26,7 @@ public class AuthenticationRoutes {
                         AuthController.logout(authDAO).handle(ctx);
                     } catch (APIException e) {
                         //Can something go wrong when logging out?
+                        ctx.status(e.getStatusCode()).result(e.getMessage());
                     }
                 });
                 post("/register", ctx -> {

@@ -3,10 +3,9 @@ package controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import daos.AuthDAO;
-import daos.UserDAO;
 import dtos.TokenDTO;
 import dtos.UserDTO;
-import exceptions.APIException;
+import com.nimbusds.jose.*;
 
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
@@ -32,9 +31,7 @@ public class AuthController {
         };
     }
     public static Handler logout(AuthDAO authDAO) {
-        return ctx -> {
-
-        };
+        return ctx -> ctx.req().logout();
     }
     public static Handler register(AuthDAO authDAO) {
         return ctx -> {
@@ -52,7 +49,18 @@ public class AuthController {
     }
     public static Handler resetPassword(AuthDAO authDAO) {
         return ctx -> {
-
+            ObjectNode node = om.createObjectNode();
+            try {
+                User user = ctx.bodyAsClass(User.class);
+                if(authDAO.doesUserExist(user.getEmail())){
+                    //use another method to generate  temporary token
+                    String token = TokenController.createToken(new UserDTO(user));
+                    
+                }
+            } catch (EntityNotFoundException e){
+                ctx.status(HttpStatus.UNPROCESSABLE_CONTENT);
+                ctx.json(node.put("msg", e.getMessage()));
+            }
         };
     }
 }
