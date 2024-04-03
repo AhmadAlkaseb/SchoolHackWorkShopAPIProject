@@ -20,7 +20,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.instructor,Role.admin
+            );
 
             // Get all events
             get("/", ctx -> {

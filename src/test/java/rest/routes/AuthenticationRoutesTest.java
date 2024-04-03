@@ -24,9 +24,9 @@ class AuthenticationRoutesTest {
 
     @BeforeEach
     void beforeEachTest() {
-        User lasse = new User("Lasse", "lasse@mail.com","1234abcd",22334455);
+        //User lasse = new User("Lasse", "lasse@mail.com","1234abcd",22334455, );
         var em = emf.createEntityManager();
-        em.persist(lasse);
+        //em.persist(lasse);
     }
     @Test
     public void login() {

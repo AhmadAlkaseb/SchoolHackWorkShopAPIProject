@@ -2,6 +2,8 @@ package application;
 
 import jakarta.persistence.EntityManagerFactory;
 import persistence.config.HibernateConfig;
+import persistence.model.Role;
+import persistence.model.User;
 import rest.config.ApplicationConfig;
 import rest.routes.AuthenticationRoutes;
 import rest.routes.EventRoutes;
@@ -18,6 +20,8 @@ public class Application {
                 .setExceptionHandlers()
                 .setRoute(eventRoutes.eventRoutes())
                 .setRoute(AuthenticationRoutes.getAuthRoutes())
-                .setRoute(userRoutes.userRoutes());
+                .setRoute(userRoutes.userRoutes())
+                .checkSecurityRoles();
+
     }
 }

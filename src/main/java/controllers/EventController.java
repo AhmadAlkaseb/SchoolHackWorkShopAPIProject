@@ -5,6 +5,7 @@ import dtos.EventDTO;
 import exceptions.APIException;
 import io.javalin.http.Handler;
 import persistence.model.Event;
+import rest.routes.Role;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

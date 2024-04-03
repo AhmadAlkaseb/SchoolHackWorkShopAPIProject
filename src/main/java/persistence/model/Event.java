@@ -71,6 +71,10 @@ public class Event {
     @Column(name = "deleted_at")
     private LocalDate deletedAt;
 
+    //Bi-directional
+    @ManyToMany(mappedBy = "events", fetch = FetchType.EAGER)
+    private Set<User> users = new HashSet<>();
+
     public enum Category {
         workshop, talk, course
     }
@@ -109,10 +113,6 @@ public class Event {
     private void onDelete() {
         deletedAt = LocalDate.now();
     }
-
-    //Bi-directional
-    @ManyToMany(mappedBy = "events", fetch = FetchType.EAGER)
-    public Set<User> users = new HashSet<>();
 
     public void updateStatus(Status status) {
         this.status = status;

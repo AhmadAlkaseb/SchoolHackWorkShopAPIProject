@@ -1,9 +1,9 @@
 package daos;
 
-import dtos.UserDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+import persistence.model.Role;
 import persistence.model.User;
 
 import java.util.List;
@@ -34,6 +34,19 @@ public class UserDAO extends AbstractDAO
         {
             TypedQuery<User> query = em.createQuery("SELECT u FROM User u", User.class);
             return query.getResultList();
+        }
+    }
+
+    public User create(User user){
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            user.addRole(em.find(Role.class,"student"));
+            em.persist(user);
+            em.getTransaction().commit();
+            return user;
+        } finally {
+            em.close();
         }
     }
 }

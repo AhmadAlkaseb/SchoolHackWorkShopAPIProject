@@ -20,7 +20,9 @@ public class AuthenticationRoutes {
                     } catch (APIException e) {
                         ctx.status(e.getStatusCode()).result(e.getMessage());
                     }
-                });
+                }
+                ,Role.anyone
+                );
                 post("/logout", ctx -> {
                     try {
                         AuthController.logout(authDAO).handle(ctx);
@@ -47,5 +49,4 @@ public class AuthenticationRoutes {
             });
         };
     }
-    private static enum Role implements RouteRole {ANYONE, USER, ADMIN}
 }

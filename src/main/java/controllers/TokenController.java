@@ -48,7 +48,7 @@ public class TokenController {
         String SECRET = System.getenv("SECRET_KEY");
         try {
             if (validateToken(token, SECRET) && tokenNotExpired(token)) {
-                return getUserWithRolesFromToken(token);
+                return getUserWithRoleFromToken(token);
             } else {
                 throw new NotAuthorizedException(403, "Token is not valid");
             }
@@ -58,16 +58,16 @@ public class TokenController {
         }
     }
 
-    private static UserDTO getUserWithRolesFromToken(String token) throws ParseException {
+    private static UserDTO getUserWithRoleFromToken(String token) throws ParseException {
         // Return a user with Set of roles as strings
         SignedJWT jwt = SignedJWT.parse(token);
         String roles = jwt.getJWTClaimsSet().getClaim("roles").toString();
-        String username = jwt.getJWTClaimsSet().getClaim("username").toString();
+        String email = jwt.getJWTClaimsSet().getClaim("email").toString();
 
         Set<String> rolesSet = Arrays
                 .stream(roles.split(","))
                 .collect(Collectors.toSet());
-        return new UserDTO(username, rolesSet);
+        return new UserDTO(email, rolesSet);
     }
 
     private static boolean validateToken(String token, String secret) throws NotAuthorizedException, JOSEException, ParseException {

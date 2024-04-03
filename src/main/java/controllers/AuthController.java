@@ -14,6 +14,9 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import persistence.model.User;
 
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class AuthController {
     private static ObjectMapper om = new ObjectMapper();
     public static Handler login(AuthDAO authDAO) {
@@ -62,5 +65,48 @@ public class AuthController {
                 ctx.json(node.put("msg", e.getMessage()));
             }
         };
+    }
+
+    public static Handler authenticate() {
+        // To check the users roles against the allowed roles for the endpoint (managed by javalins accessManager)
+        // Checked in 'before filter' -> Check for Authorization header to find token.
+        // Find user inside the token, forward the ctx object with userDTO on attribute
+        // When ctx hits the endpoint it will have the user on the attribute to check for roles (ApplicationConfig -> accessManager)
+        ObjectNode returnObject = om.createObjectNode();
+        return (ctx) -> {
+            if(ctx.method().toString().equals("OPTIONS")) {
+                ctx.status(200);
+                return;
+            }
+            String header = ctx.header("Authorization");
+            if (header == null) {
+                ctx.status(HttpStatus.FORBIDDEN).json(returnObject.put("msg", "Authorization header missing"));
+                return;
+            }
+            String token = header.split(" ")[1];
+            if (token == null) {
+                ctx.status(HttpStatus.FORBIDDEN).json(returnObject.put("msg", "Authorization header malformed"));
+                return;
+            }
+            UserDTO verifiedTokenUser = TokenController.verifyToken(token);
+            if (verifiedTokenUser == null) {
+                ctx.status(HttpStatus.FORBIDDEN).json(returnObject.put("msg", "Invalid User or Token"));
+            }
+            System.out.println("USER IN AUTHENTICATE: " + verifiedTokenUser);
+            ctx.attribute("user", verifiedTokenUser);
+        };
+    }
+
+    public static boolean authorize(UserDTO user, Set<String> allowedRoles)
+    {
+        AtomicBoolean hasAccess = new AtomicBoolean(false); // Since we update this in a lambda expression, we need to use an AtomicBoolean
+        if (user != null) {
+            user.getRoles().stream().forEach(role -> {
+                if (allowedRoles.contains(role.toUpperCase())) {
+                    hasAccess.set(true);
+                }
+            });
+        }
+        return hasAccess.get();
     }
 }
