@@ -7,6 +7,7 @@ import daos.UserDAO;
 import exceptions.APIException;
 import io.javalin.apibuilder.EndpointGroup;
 import persistence.config.HibernateConfig;
+import persistence.model.User;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
