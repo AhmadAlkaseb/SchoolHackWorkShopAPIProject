@@ -17,6 +17,5 @@ public class Application {
                 .setExceptionHandlers()
                 .setRoute(eventRoutes.eventRoutes())
                 .setRoute(userRoutes.userRoutes());
-
     }
 }
