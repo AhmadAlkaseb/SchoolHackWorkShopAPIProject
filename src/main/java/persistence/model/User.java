@@ -20,12 +20,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    //todo: email should be unique
     private String email;
     private String password;
     private int phone;
-    //private Set<Role> roles;
-
 
     public User(String name, String email, String password, int phone) {
         this.name = name;
