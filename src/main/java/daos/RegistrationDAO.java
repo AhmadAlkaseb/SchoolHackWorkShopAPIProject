@@ -1,5 +1,6 @@
 package daos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dtos.RegistrationDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -9,7 +10,6 @@ import persistence.model.Registration;
 import java.util.List;
 
 public class RegistrationDAO extends AbstractDAO{
-
     private static RegistrationDAO instance;
     private static EntityManagerFactory emf;
 
@@ -25,26 +25,22 @@ public class RegistrationDAO extends AbstractDAO{
         return instance;
     }
 
-    //registrations only ID's
-//    public static List<Registration> readAll2() {
-//        try (EntityManager em = emf.createEntityManager()) {
-//            TypedQuery<Registration> query = em.createQuery("SELECT r FROM Registration r", Registration.class);
-//            return query.getResultList();
-//        }
-//    }
-
-
-    public static List<RegistrationDTO> readAll() {
+    public List<Registration> readAll() {
         try (EntityManager em = emf.createEntityManager()) {
-
-            String jpql = "SELECT new dtos.RegistrationDTO(r.id, u.id, u.name, e.id, e.description) " +
-                    "FROM Registration r " +
-                    "JOIN r.user u " +
-                    "JOIN r.event e";
-
-            TypedQuery<RegistrationDTO> query = em.createQuery(jpql, RegistrationDTO.class);
+            TypedQuery<Registration> query = em.createQuery("SELECT r From Registration r", Registration.class);
             return query.getResultList();
         }
     }
 
+    public Registration getRegistrationByNameAndEvent(int userId, int eventId){
+
+        try(EntityManager em = emf.createEntityManager()){
+            TypedQuery<Registration> query = em.createQuery("Select r From Registration r " +
+                    "join r.user " +
+                    "join r.event where r.user.id=:userId and r.event.id=:eventId", Registration.class);
+            query.setParameter("userId",userId);
+            query.setParameter("eventId",eventId);
+            return query.getSingleResult();
+        }
+    }
 }

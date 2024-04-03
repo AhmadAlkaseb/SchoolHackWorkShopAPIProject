@@ -72,6 +72,13 @@ public class User {
         }
     }
 
+    public void removeEvent(Event event) {
+        if (event != null) {
+            events.remove(event);
+            event.users.remove(this);
+        }
+    }
+
     @Override
     public String toString() {
         return "User - " +

@@ -1,0 +1,17 @@
+### Get all the registrations
+GET http://localhost:7007/api/registrations
+
+### Get registration by ID
+GET http://localhost:7007/api/registrations/1
+
+### Add user to event
+POST http://localhost:7007/api/registrations/add_user_to_event/1
+
+4
+
+### Delete user from event
+DELETE http://localhost:7007/api/registrations/delete_user_from_event/1
+
+3
+
+###
