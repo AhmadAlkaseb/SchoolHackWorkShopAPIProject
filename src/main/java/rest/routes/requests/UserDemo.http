@@ -1,0 +1,25 @@
+### Get all user.
+GET http://localhost:7007/api/users
+
+### Get a single user.
+GET http://localhost:7007/api/users/2
+
+### Create a new user
+POST http://localhost:7007/api/users
+
+{
+"name": "Hanni",
+"email": "hanni@hanni.dk",
+"password" : "hanni",
+"phone": 53702510
+}
+
+### Update a user
+PUT http://localhost:7007/api/users/1
+
+{
+"name": "Emil"
+}
+
+### Delete a user
+DELETE http://localhost:7007/api/users/1

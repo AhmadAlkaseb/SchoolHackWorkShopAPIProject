@@ -83,22 +83,4 @@ public class UserRoutes
             });
         });
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Get all users.
-    // Get a single user.
-    // Create a new user.
-    // Update a user.
-    // Delete a user.
 }
