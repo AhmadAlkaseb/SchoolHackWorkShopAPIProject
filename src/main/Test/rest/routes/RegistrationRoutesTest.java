@@ -1,6 +1,7 @@
 package rest.routes;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
@@ -12,7 +13,8 @@ import rest.config.ApplicationConfig;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.hamcrest.Matchers.*;
 
 class RegistrationRoutesTest {
 
@@ -45,11 +47,11 @@ class RegistrationRoutesTest {
                 .startServer(port)
                 .setRoute(registrationRoutes.registrationRoutes());
 
-        user1 = new User("Hans", "hans@mail.com", "password", 12345678, User.Role.admin);
-        user2 = new User("Martin", "martin@mail.com", "password", 12345678, User.Role.instructor);
-        user3 = new User("Tom", "tom@mail.com", "password", 12345678, User.Role.student);
-        user4 = new User("Louise", "louise@mail.com", "password", 12345678, User.Role.student);
-        user5 = new User("Helle", "helle@mail.com", "password", 12345678, User.Role.student);
+        user1 = new User("Hans", "hans@mail.com", "password", 12345678);
+        user2 = new User("Martin", "martin@mail.com", "password", 12345678);
+        user3 = new User("Tom", "tom@mail.com", "password", 12345678);
+        user4 = new User("Louise", "louise@mail.com", "password", 12345678);
+        user5 = new User("Helle", "helle@mail.com", "password", 12345678);
 
         event1 = new Event("Yoga for Beginners", Event.Category.workshop, "A relaxing introduction to yoga.", LocalDate.of(2024, 4, 3), LocalTime.of(18, 0), 1.5, 20, "Room 101", "John Doe", 10.0, "yoga.jpg", Event.Status.active);
         event2 = new Event("Advanced Pottery", Event.Category.course, "Sculpt and mold your way to mastery.", LocalDate.of(2024, 4, 4), LocalTime.of(17, 0), 2.0, 15, "Art Studio", "Jane Smith", 20.0, "pottery.jpg", Event.Status.active);
@@ -105,6 +107,41 @@ class RegistrationRoutesTest {
     @DisplayName("Retrieval of all registrations method")
     public void test1(){
 
+        int expectedSize = 8; //der er 8 registreringer i beforeAll
+        int expectedUserId = user1.getId();
+        String expectedEventName = event2.getDescription();
+
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get("/registrations")
+                .then()
+                .statusCode(200)
+                .body("[0].userId", equalTo(expectedUserId))
+                .body("[0].eventName", equalTo(expectedEventName))
+                .body("size()", is(expectedSize))
+                .extract().response().prettyPrint();
     }
 
+    @Test
+    @DisplayName("Retrieval of a single registration by event id and user id")
+    public void test3(){
+
+        int expectedSize = 8; //der er 8 registreringer i beforeAll
+        int expectedUserId = user1.getId();
+        String expectedEventName = event2.getDescription();
+
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get("/registrations")
+                .then()
+                .statusCode(200)
+                .body("[0].userId", equalTo(expectedUserId))
+                .body("[0].eventName", equalTo(expectedEventName))
+                .body("size()", is(expectedSize))
+                .extract().response().prettyPrint();
+    }
 }

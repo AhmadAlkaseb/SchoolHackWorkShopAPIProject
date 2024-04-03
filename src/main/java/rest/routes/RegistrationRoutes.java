@@ -19,7 +19,7 @@ public class RegistrationRoutes {
     public EndpointGroup registrationRoutes() {
         return () -> path("/registrations", () -> {
 
-            // GET /registrations/:id: Get all registrations for an event.
+            // GET /registrations/ Get all registrations.
             get("/", ctx -> {
                 try {
                     RegistrationController.readAll(regDAO).handle(ctx);
@@ -28,7 +28,16 @@ public class RegistrationRoutes {
                 }
             });
 
-            // GET /registration/:id: Get a single registration.
+            // GET /registrations/:id: Get all registrations for an event.
+            get("/all-by-eventid/{event-id}", ctx -> {
+                try {
+                    RegistrationController.readAllByEvent(regDAO).handle(ctx);
+                } catch (APIException e) {
+                    ctx.status(e.getStatusCode()).result(e.getMessage());
+                }
+            });
+
+            // GET /registrations/:id: Get a single registration.
             get("/{id}", ctx -> {
                 try {
                     RegistrationController.getById(regDAO).handle(ctx);

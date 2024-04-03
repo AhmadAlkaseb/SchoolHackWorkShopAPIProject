@@ -25,6 +25,14 @@ public class RegistrationDAO extends AbstractDAO{
         return instance;
     }
 
+    public List<Registration> readAllByEvent(int eventId) {
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<Registration> query = em.createQuery("SELECT r From Registration r JOIN r.event WHERE r.event.id =:eventId", Registration.class);
+            query.setParameter("eventId", eventId);
+            return query.getResultList();
+        }
+    }
+
     public List<Registration> readAll() {
         try (EntityManager em = emf.createEntityManager()) {
             TypedQuery<Registration> query = em.createQuery("SELECT r From Registration r", Registration.class);
