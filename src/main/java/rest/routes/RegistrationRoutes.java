@@ -1,6 +1,5 @@
 package rest.routes;
 
-import controllers.EventController;
 import controllers.RegistrationController;
 import daos.EventDAO;
 import daos.RegistrationDAO;
@@ -38,7 +37,7 @@ public class RegistrationRoutes {
             });
 
             // POST /registrations/:id: Register a user for an event.
-            post("/add_user_to_event/{id}", ctx -> {
+            post("/add_user_to_event/{eventid}", ctx -> {
                 try {
                     RegistrationController.registerUserToEvent(userDAO, eventDAO).handle(ctx);
                 } catch (APIException e) {
@@ -47,7 +46,7 @@ public class RegistrationRoutes {
             });
 
             // DELETE /registrations/:id: Cancel a user's registration for an event.
-            delete("/delete_user_from_event/{id}", ctx -> {
+            delete("/delete_user_from_event/{eventid}", ctx -> {
                 try {
                     RegistrationController.deleteUserFromEvent(regDAO).handle(ctx);
                 } catch (APIException e) {

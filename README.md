@@ -1,13 +1,17 @@
 # SchoolHackWorkShopAPIProject
+
 Link til at gøre links kortere: https://free-url-shortener.rb.gy/
- 
-### Udarbejdet af 
+
+### Udarbejdet af
+
 Ahmad, Hanni, Lasse & Youssef
 
 ### Link til DM:
+
 https://rb.gy/vbx7ci
 
 ### Link til ERD:
+
 https://rb.gy/t9pwu6
 
 ### User stories & status
@@ -22,7 +26,7 @@ STATUS:
 As a user, I want to cancel my registration for an event/workshop.
 STATUS:
 As a user, I want to be able to reset my password.
-(How can you make sure that the user is the one who is resetting the password?) 
+(How can you make sure that the user is the one who is resetting the password?)
 STATUS:
 
 Instructor Stories  
@@ -48,32 +52,37 @@ STATUS:
 
 ### API Documentation
 
+    HTTP method | Rest Ressource                                     | Role                              | Response body | Exception & status  | Comment
+    
     Events
-    HTTP method | Rest Ressource                    | Role        | Response body | Exception & status  | Comment
-    GET           api/events                          student                   APIException & 404    Retrieve all events
-    GET           api/events/{id}                     student                   APIException & 404    Retrieve an event by id
-    GET           api/events/categories/{category}    student                   APIException & 404    Retrieve an event by category
-    GET           api/events/status/{status}          student                   APIException & 404    Retrieve an event by status
-    POST          api/events                          instructor                APIException & 500    Add a new event
-    PUT           api/events/{id}                     instructor                APIException & 404    Update an event by id
-    DELETE        api/events/{id}                     admin                     APIException & 404    Delete an event by id
+    GET           api/events                                           anyone                                              APIException & 404    Retrieve all events
+    GET           api/events/{id}                                      anyone                                              APIException & 404    Retrieve an event by id
+    GET           api/events/categories/{category}                     anyone                                              APIException & 404    Retrieve an event by category
+    GET           api/events/status/{status}                           anyone                                              APIException & 404    Retrieve an event by status
+    POST          api/events                                           instructor / admin                                  APIException & 500    Add a new event
+    PUT           api/events/{id}                                      instructor / admin                                  APIException & 404    Update an event by id
+    DELETE        api/events/{id}                                      admin                                               APIException & 404    Delete an event by id
 
     Users
-    HTTP method | Rest Ressource                    | Role           | Response body | Exception & status  | Comment
-    GET           api/users                           Admin                            APIException & 404    Retrieve all users
-    GET           api/users/{id}                      Admin                            APIException & 404    Retrieve a single user by ID
-    POST          api/users                           Student                          APIException & 500    Create a new user
-    PUT           api/users/{id}                      Student/Admin                    APIException & 404    Update a user by ID
-    DELETE        api/users/{id}                      Student/Admin                    APIException & 404    Delete a user by ID
-
+    GET           api/users                                             Admin                                               APIException & 404    Retrieve all users
+    GET           api/users/{id}                                        Admin                                               APIException & 404    Retrieve a single user by ID
+    POST          api/users                                             Student / admin                                     APIException & 500    Create a new user
+    PUT           api/users/{id}                                        Student/Admin                                       APIException & 404    Update a user by ID
+    DELETE        api/users/{id}                                        Student/Admin                                       APIException & 404    Delete a user by ID
+ 
     Registrations
-    HTTP method | Rest Ressource | Role     | Response body | Exception & status  | Comment
+    GET           api/registrations/                                    instructor / admin                                  APIException & 404    Retrieve all registrations
+    GET           api/registrations/{id}                                instructor / admin                                  APIException & 404    Retrieve registration by id
+    POST          api/registrations/add_user_to_event/{eventid}         user / instructor / admin                           APIException & 404    Registrating user to event by event id in path and user id in body 
+    DELETE        api/registrations/delete_user_from_event/{eventid}    user / instructor / admin                           APIException & 404    Delete a registration by event id in path and user id in body
 
     Authentication
-    HTTP method | Rest Ressource | Role     | Response body | Exception & status  | Comment
+
+
 
 ### Test
-Link: 
+
+Link:
 
 Test coverage of:
 

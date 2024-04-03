@@ -6,7 +6,6 @@ import daos.UserDAO;
 import dtos.RegistrationDTO;
 import exceptions.APIException;
 import io.javalin.http.Handler;
-import jakarta.persistence.EntityNotFoundException;
 import persistence.model.Event;
 import persistence.model.Registration;
 import persistence.model.User;
@@ -57,14 +56,14 @@ public class RegistrationController {
             if(registration != null){
                 ctx.json(registration);
             }else{
-                throw new APIException(401, "Registration with ID: "+id+" was not found");
+                throw new APIException(404, "Registration with ID: "+id+" was not found " + timestamp);
             }
         };
     }
 
     public static Handler registerUserToEvent(UserDAO userDAO, EventDAO eventDAO) {
         return ctx ->{
-            int eventId = Integer.parseInt(ctx.pathParam("id"));
+            int eventId = Integer.parseInt(ctx.pathParam("eventid"));
             int userId = ctx.bodyAsClass(Integer.class);
 
             User user = (User) userDAO.getById(userId);
@@ -74,14 +73,14 @@ public class RegistrationController {
                 user.addEvent(event);
                 userDAO.update(user);
             }else{
-                throw new EntityNotFoundException();
+                throw new APIException(404, "Registration of user to event was not possible, User og Event was not found " + timestamp);
             }
         };
     }
 
     public static Handler deleteUserFromEvent(RegistrationDAO registrationDAO) {
         return ctx -> {
-            int eventId = Integer.parseInt(ctx.pathParam("id"));
+            int eventId = Integer.parseInt(ctx.pathParam("eventid"));
             int userId = ctx.bodyAsClass(Integer.class);
 
             Registration registration = registrationDAO.getRegistrationByNameAndEvent(userId, eventId);
@@ -92,7 +91,7 @@ public class RegistrationController {
                 registrationDAO.delete(registration.getId());
                 ctx.json(dto);
             }else{
-                throw new EntityNotFoundException();
+                throw new APIException(404, "Could not delete registration, user or event not found "+ timestamp);
             }
         };
     }
