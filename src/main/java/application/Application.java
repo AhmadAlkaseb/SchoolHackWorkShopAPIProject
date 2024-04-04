@@ -21,6 +21,7 @@ public class Application {
                 .setRoute(eventRoutes.eventRoutes())
                 .setRoute(AuthenticationRoutes.getAuthRoutes())
                 .setRoute(userRoutes.userRoutes())
+                .setRoute(AuthenticationRoutes.authBefore())
                 .checkSecurityRoles();
 
     }

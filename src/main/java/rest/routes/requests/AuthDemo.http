@@ -15,3 +15,15 @@ POST http://localhost:7007/api/auth/register
 "password": "1234qwer",
 "phone": 53702510
 }
+
+### Logout
+POST http://localhost:7007/api/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsQGxhaHkuZGsiLCJwaG9uZSI6NTM3MDI1MTAsInJvbGVzIjoic3R1ZGVudCIsImlzcyI6IlRlYW1MQUhZIiwibmFtZSI6InRlc3QiLCJpZCI6MTUwLCJleHAiOjE3MTIyMjU4OTUsImVtYWlsIjoibEBsYWh5LmRrIn0.ndBwIqx1timKW43OOtZuBivN1bfaNQ2CLFIz8alqqvE
+
+### Update a user
+PUT http://localhost:7007/api/users/150
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsQGxhaHkuZGsiLCJwaG9uZSI6NTM3MDI1MTAsInJvbGVzIjoic3R1ZGVudCIsImlzcyI6IlRlYW1MQUhZIiwibmFtZSI6InRlc3QiLCJpZCI6MTUwLCJleHAiOjE3MTIyMjU4OTUsImVtYWlsIjoibEBsYWh5LmRrIn0.ndBwIqx1timKW43OOtZuBivN1bfaNQ2CLFIz8alqqvE
+
+{
+"name": "lasse"
+}

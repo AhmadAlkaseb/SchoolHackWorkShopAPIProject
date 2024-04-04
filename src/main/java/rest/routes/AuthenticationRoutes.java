@@ -5,13 +5,17 @@ import daos.AuthDAO;
 import daos.UserDAO;
 import exceptions.APIException;
 import io.javalin.apibuilder.EndpointGroup;
-import io.javalin.security.RouteRole;
 import persistence.config.HibernateConfig;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 public class AuthenticationRoutes {
     private static UserDAO userDAO = UserDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
     private static AuthDAO authDAO = AuthDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
+    public static EndpointGroup authBefore() {
+        return () -> {
+            path("/", () -> before(AuthController.authenticate()));
+        };
+    }
     public static EndpointGroup getAuthRoutes() {
         return () -> {
             path("/auth", () -> {
@@ -23,7 +27,7 @@ public class AuthenticationRoutes {
                         ctx.status(e.getStatusCode()).result(e.getMessage());
                     }
                 }
-                ,Role.anyone
+                ,Role.ANYONE
                 );
                 //Logout route
                 post("/logout", ctx -> {
@@ -33,7 +37,7 @@ public class AuthenticationRoutes {
                         ctx.status(e.getStatusCode()).result(e.getMessage());
                     }
                 }
-                ,Role.student,Role.instructor,Role.admin
+                ,Role.ANYONE
                 );
                 //Register new user route
                 post("/register", ctx -> {
@@ -43,7 +47,7 @@ public class AuthenticationRoutes {
                         ctx.status(e.getStatusCode()).result(e.getMessage());
                     }
                 }
-                ,Role.anyone
+                ,Role.ANYONE
                 );
                 //todo: not done
                 //request with email

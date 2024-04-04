@@ -2,10 +2,7 @@ package persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.HashSet;
@@ -14,6 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class User {
@@ -54,7 +52,7 @@ public class User {
 
     @JsonIgnore
     //Bi-directional
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "registrations",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -78,7 +76,7 @@ public class User {
 
     public Set<String> getRolesAsStrings(){
         Set<String> roleStringSet = new HashSet<>();
-        this.getRoles().forEach(role -> roleStringSet.add(role.toString()));
+        this.getRoles().forEach(role -> roleStringSet.add(role.getRolename()));
         return roleStringSet;
     }
 

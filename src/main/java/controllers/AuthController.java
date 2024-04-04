@@ -35,7 +35,14 @@ public class AuthController {
         };
     }
     public static Handler logout(AuthDAO authDAO) {
-        return ctx -> ctx.req().logout();
+        return ctx -> {
+            ObjectNode node = om.createObjectNode();
+            String header = ctx.header("Authorization");
+            String token = header.split(" ")[1];
+            TokenController.invalidateToken(token);
+            ctx.attribute("user", null);
+            ctx.json(node.put("msg","you are now logged out"));
+        };
     }
     public static Handler register(UserDAO userDAO) {
         return ctx -> {

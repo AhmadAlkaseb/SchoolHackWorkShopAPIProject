@@ -21,7 +21,7 @@ public class EventRoutes {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.instructor,Role.admin
+            ,Role.INSTRUCTOR,Role.ADMIN
             );
 
             // Get all events
@@ -32,7 +32,7 @@ public class EventRoutes {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.anyone
+            ,Role.ANYONE
             );
 
             // Get a specific event by id
@@ -43,7 +43,7 @@ public class EventRoutes {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.anyone
+            ,Role.ANYONE
             );
 
             // Update a specific event by id
@@ -54,7 +54,7 @@ public class EventRoutes {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.instructor,Role.admin
+            ,Role.INSTRUCTOR,Role.ADMIN
             );
 
             // Delete existing event by id
@@ -65,7 +65,7 @@ public class EventRoutes {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.admin
+            ,Role.ADMIN
             );
 
             // Filter events by category
@@ -76,7 +76,7 @@ public class EventRoutes {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.anyone
+            ,Role.ANYONE
             );
 
             // Filter events by status
@@ -87,7 +87,7 @@ public class EventRoutes {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.anyone
+            ,Role.ANYONE
             );
         });
     }

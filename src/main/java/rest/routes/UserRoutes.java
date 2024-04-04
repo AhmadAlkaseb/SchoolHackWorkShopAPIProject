@@ -29,7 +29,7 @@ public class UserRoutes
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.admin
+            ,Role.ADMIN
             );
 
             // Get a single user.
@@ -44,7 +44,7 @@ public class UserRoutes
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.admin
+            ,Role.ADMIN
             );
 
             // Create a new user.
@@ -59,7 +59,7 @@ public class UserRoutes
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.admin
+            ,Role.ADMIN
             );
 
             // Update a user.
@@ -74,7 +74,7 @@ public class UserRoutes
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.student,Role.instructor
+            ,Role.STUDENT,Role.INSTRUCTOR,Role.ADMIN
             );
 
             // Delete a user
@@ -89,7 +89,7 @@ public class UserRoutes
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.student,Role.instructor
+            ,Role.STUDENT,Role.INSTRUCTOR,Role.ADMIN
             );
         });
     }
