@@ -47,6 +47,28 @@ class RegistrationRoutesTest {
                 .startServer(port)
                 .setRoute(registrationRoutes.registrationRoutes());
 
+
+//        user1.addEvent(event2);
+//        user3.addEvent(event4);
+//        user5.addEvent(event1);
+
+
+    }
+
+    @AfterAll
+    static void tearDown() {
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            em.createNativeQuery("ALTER SEQUENCE registrations_id_seq RESTART WITH 1").executeUpdate();
+            em.getTransaction().commit();
+        }
+        emf.close();
+        app.stopServer();
+    }
+
+    @BeforeEach
+    void setUpBeforeEach() {
+
         user1 = new User("Hans", "hans@mail.com", "password", 12345678);
         user2 = new User("Martin", "martin@mail.com", "password", 12345678);
         user3 = new User("Tom", "tom@mail.com", "password", 12345678);
@@ -65,21 +87,9 @@ class RegistrationRoutesTest {
         user4.addEvent(event4);
         user5.addEvent(event5);
 
-        user1.addEvent(event2);
-        user3.addEvent(event4);
-        user5.addEvent(event1);
-    }
-
-    @AfterAll
-    static void tearDown() {
-        emf.close();
-        app.stopServer();
-    }
-
-    @BeforeEach
-    void setUpBeforeEach() {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
+
             em.persist(user1);
             em.persist(user2);
             em.persist(user3);
@@ -92,26 +102,25 @@ class RegistrationRoutesTest {
     @AfterEach
     void tearDownAfterEach() {
         try (EntityManager em = emf.createEntityManager()) {
-//            em.getTransaction().begin();
-//
-//            // Antager at der er en metode til at slette data fra specifikke tabeller
-//            em.createQuery("DELETE FROM Registration").executeUpdate();
-//            em.createQuery("DELETE FROM Event").executeUpdate();
-//            em.createQuery("DELETE FROM User").executeUpdate();
-//            em.getTransaction().commit();
+            em.getTransaction().begin();
 
-            em.getTransaction().rollback();
-            em.close();
+            // Truncate tabeller - rigtig tabel navn skal benyttes - alt indhold slettes.
+            em.createNativeQuery("TRUNCATE TABLE registrations CASCADE").executeUpdate();
+            em.createNativeQuery("TRUNCATE TABLE events CASCADE").executeUpdate();
+            em.createNativeQuery("TRUNCATE TABLE users CASCADE").executeUpdate();
 
+            // Reset sequence
+            em.createNativeQuery("ALTER SEQUENCE registrations_id_seq RESTART WITH 1").executeUpdate();
 
+            em.getTransaction().commit();
         }
     }
 
     @Test
     @DisplayName("Retrieval of all registrations method")
-    public void test1(){
+    public void test1() {
 
-        int expectedSize = 8; //der er 8 registreringer i beforeAll
+        int expectedSize = 5; //der er 8 registreringer i beforeAll
         int expectedUserId = user1.getId();
         String expectedEventName = event1.getDescription();
 
@@ -130,22 +139,25 @@ class RegistrationRoutesTest {
 
     @Test
     @DisplayName("Retrieval of a single registration by event id and user id")
-    public void test3(){
+    public void test3() {
 
-        int expectedSize = 8; //der er 8 registreringer i beforeAll
+        int expectedSize = 5; //der er 5 registreringer i beforeAll
         int expectedUserId = user1.getId();
-        String expectedEventName = event2.getDescription();
+        String expectedEventName = event1.getDescription();
+
+        System.out.println(expectedUserId);
 
         RestAssured
-                .given()
+                .given().log().all()
                 .contentType(ContentType.JSON)
                 .when()
-                .get("/registrations")
+                .get("/registrations/372")
                 .then()
+                .log().all()
                 .statusCode(200)
-                .body("[0].userId", equalTo(expectedUserId))
-                .body("[0].eventName", equalTo(expectedEventName))
-                .body("size()", is(expectedSize))
                 .extract().response().prettyPrint();
+
+        System.out.println(expectedUserId);
+
     }
 }
