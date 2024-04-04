@@ -13,10 +13,10 @@ import rest.config.ApplicationConfig;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
-import static org.hamcrest.Matchers.*;
-
-class RegistrationRoutesTest {
+public class RegRoutesTest {
 
     private static EntityManagerFactory emf;
     private static ApplicationConfig app;
@@ -156,3 +156,5 @@ class RegistrationRoutesTest {
 
     }
 }
+
+
