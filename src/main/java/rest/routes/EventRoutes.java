@@ -22,7 +22,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.INSTRUCTOR,Role.ADMIN
+            );
 
             // Get all events
             get("/", ctx -> {
@@ -31,7 +33,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.ANYONE
+            );
 
             // Get a specific event by id
             get("/{id}", ctx -> {
@@ -40,7 +44,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.ANYONE
+            );
 
             // Update a specific event by id
             put("/{id}", ctx -> {
@@ -49,7 +55,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.INSTRUCTOR,Role.ADMIN
+            );
 
             // Delete existing event by id
             delete("/{id}", ctx -> {
@@ -58,7 +66,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.ADMIN
+            );
 
             // Filter events by category
             get("/categories/{category}", ctx -> {
@@ -67,7 +77,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.ANYONE
+            );
 
             // Filter events by status
             get("/status/{status}", ctx -> {
@@ -76,7 +88,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.ANYONE
+            );
         });
     }
 }

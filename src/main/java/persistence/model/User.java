@@ -2,9 +2,7 @@ package persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.HashSet;
@@ -13,6 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class User {
@@ -32,28 +31,24 @@ public class User {
     @Column(nullable = false)
     private int phone;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
+    @Column(nullable = false, columnDefinition = "student")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "rolename", referencedColumnName = "rolename"))
+    private Set<Role> roles = new HashSet<>();
 
-    public enum Role {
-        instructor,
-        student,
-        admin
-    }
-
-    public User(String name, String email, String password, int phone, Role role) {
+    public User(String name, String email, String password, int phone) {
         this.name = name;
         this.email = email;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.phone = phone;
-        this.role = role;
     }
 
     public boolean verifyPassword(String pw) {
         return BCrypt.checkpw(pw, this.password);
     }
-
 
     @JsonIgnore
     //Bi-directional
@@ -68,15 +63,21 @@ public class User {
     public void addEvent(Event event) {
         if (event != null) {
             events.add(event);
-            event.users.add(this);
+            event.getUsers().add(this);
         }
     }
 
-    public void removeEvent(Event event) {
-        if (event != null) {
-            events.remove(event);
-            event.users.remove(this);
+    public void addRole(Role role){
+        if(role != null){
+            roles.add(role);
+            role.getUsers().add(this);
         }
+    }
+
+    public Set<String> getRolesAsStrings(){
+        Set<String> roleStringSet = new HashSet<>();
+        this.getRoles().forEach(role -> roleStringSet.add(role.getRolename()));
+        return roleStringSet;
     }
 
     @Override
@@ -87,5 +88,9 @@ public class User {
                 ", email = " + email +
                 ", password = " + password +
                 ", phone = " + phone;
+    }
+
+    public void setPassword(String password) {
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }

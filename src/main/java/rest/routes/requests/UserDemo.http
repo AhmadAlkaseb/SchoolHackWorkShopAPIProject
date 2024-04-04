@@ -8,12 +8,10 @@ GET http://localhost:7007/api/users/3
 POST http://localhost:7007/api/users
 
 {
-"name": "Hanni",
-"email": "hanni@ahmad.dk",
-"password" : "hanni",
-"phone": 53702510,
-"role": "student"
-
+"name": "Lasse",
+"email": "lasse@lasse.dk",
+"password" : "1234qwer",
+"phone": 53702510
 }
 
 ### Update a user
