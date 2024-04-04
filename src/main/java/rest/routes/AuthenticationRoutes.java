@@ -14,6 +14,7 @@ public class AuthenticationRoutes {
     public static EndpointGroup getAuthRoutes() {
         return () -> {
             path("/auth", () -> {
+                //Login route
                 post("/login", ctx -> {
                     try {
                         AuthController.login(authDAO).handle(ctx);
@@ -23,22 +24,31 @@ public class AuthenticationRoutes {
                 }
                 ,Role.anyone
                 );
+                //Logout route
                 post("/logout", ctx -> {
                     try {
                         AuthController.logout(authDAO).handle(ctx);
                     } catch (APIException e) {
-                        //Can something go wrong when logging out?
                         ctx.status(e.getStatusCode()).result(e.getMessage());
                     }
-                });
+                }
+                ,Role.student,Role.instructor,Role.admin
+                );
+                //Register new user route
                 post("/register", ctx -> {
                     try {
                         AuthController.register(authDAO).handle(ctx);
-
                     } catch (APIException e){
-
+                        ctx.status(e.getStatusCode()).result(e.getMessage());
                     }
-                });
+                }
+                ,Role.anyone
+                );
+                //todo: not done
+                //request with email
+                //create new temporary token and route from that token
+                //response with that temporary token
+                //let user post new password, unless token is expired
                 post("/reset-password", ctx -> {
                     try {
                         AuthController.resetPassword(authDAO).handle(ctx);

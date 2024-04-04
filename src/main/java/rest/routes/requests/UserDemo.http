@@ -10,7 +10,7 @@ POST http://localhost:7007/api/users
 {
 "name": "Lasse",
 "email": "lasse@lasse.dk",
-"password" : "hanni",
+"password" : "1234qwer",
 "phone": 53702510
 }
 

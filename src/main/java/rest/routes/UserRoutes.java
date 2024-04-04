@@ -28,7 +28,9 @@ public class UserRoutes
                 {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.admin
+            );
 
             // Get a single user.
             get("/{id}", ctx ->
@@ -41,7 +43,9 @@ public class UserRoutes
                 {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.admin
+            );
 
             // Create a new user.
             post("/", ctx ->
@@ -54,7 +58,9 @@ public class UserRoutes
                 {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.admin
+            );
 
             // Update a user.
             put("/{id}", ctx ->
@@ -67,7 +73,9 @@ public class UserRoutes
                 {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.student,Role.instructor
+            );
 
             // Delete a user
             delete("/{id}", ctx ->
@@ -80,7 +88,9 @@ public class UserRoutes
                 {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.student,Role.instructor
+            );
         });
     }
 }

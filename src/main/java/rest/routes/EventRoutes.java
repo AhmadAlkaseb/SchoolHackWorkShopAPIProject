@@ -31,7 +31,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.anyone
+            );
 
             // Get a specific event by id
             get("/{id}", ctx -> {
@@ -40,7 +42,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.anyone
+            );
 
             // Update a specific event by id
             put("/{id}", ctx -> {
@@ -49,7 +53,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.instructor,Role.admin
+            );
 
             // Delete existing event by id
             delete("/{id}", ctx -> {
@@ -58,7 +64,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.admin
+            );
 
             // Filter events by category
             get("/categories/{category}", ctx -> {
@@ -67,7 +75,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.anyone
+            );
 
             // Filter events by status
             get("/status/{status}", ctx -> {
@@ -76,7 +86,9 @@ public class EventRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }
+            ,Role.anyone
+            );
         });
     }
 

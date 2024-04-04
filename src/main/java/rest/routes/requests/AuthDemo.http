@@ -1,6 +1,17 @@
+### User login
 POST http://localhost:7007/api/auth/login
 
 {
 "email":"lasse@lasse.dk",
-"password":"hanni"
+"password":"1234qwer"
+}
+
+### Register new user
+POST http://localhost:7007/api/auth/register
+
+{
+"name": "Lasse",
+"email": "lasse@lasse.dk",
+"password": "1234qwer",
+"phone": 53702510
 }
