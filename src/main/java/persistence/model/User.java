@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.HashSet;
@@ -33,7 +34,8 @@ public class User {
     private int phone;
 
     @Column(nullable = false, columnDefinition = "student")
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @ToString.Exclude
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "rolename", referencedColumnName = "rolename"))
@@ -52,7 +54,7 @@ public class User {
 
     @JsonIgnore
     //Bi-directional
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "registrations",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -88,5 +90,9 @@ public class User {
                 ", email = " + email +
                 ", password = " + password +
                 ", phone = " + phone;
+    }
+
+    public void setPassword(String password) {
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }

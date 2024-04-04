@@ -2,7 +2,7 @@
 POST http://localhost:7007/api/auth/login
 
 {
-"email":"lasse@lasse.dk",
+"email":"l@lahy.dk",
 "password":"1234qwer"
 }
 
@@ -11,7 +11,7 @@ POST http://localhost:7007/api/auth/register
 
 {
 "name": "Lasse",
-"email": "lasse@lasse.dk",
+"email": "l@lahy.dk",
 "password": "1234qwer",
 "phone": 53702510
 }

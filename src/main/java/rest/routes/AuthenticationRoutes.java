@@ -10,6 +10,7 @@ import persistence.config.HibernateConfig;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 public class AuthenticationRoutes {
+    private static UserDAO userDAO = UserDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
     private static AuthDAO authDAO = AuthDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
     public static EndpointGroup getAuthRoutes() {
         return () -> {
@@ -37,7 +38,7 @@ public class AuthenticationRoutes {
                 //Register new user route
                 post("/register", ctx -> {
                     try {
-                        AuthController.register(authDAO).handle(ctx);
+                        AuthController.register(userDAO).handle(ctx);
                     } catch (APIException e){
                         ctx.status(e.getStatusCode()).result(e.getMessage());
                     }
