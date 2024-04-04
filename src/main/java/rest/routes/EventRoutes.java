@@ -1,95 +1,99 @@
 package rest.routes;
 
+import controllers.AuthController;
 import controllers.EventController;
-import controllers.RegistrationController;
 import daos.EventDAO;
-import daos.RegistrationDAO;
 import exceptions.APIException;
 import io.javalin.apibuilder.EndpointGroup;
-import persistence.config.HibernateConfig;
+import jakarta.persistence.EntityManagerFactory;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class EventRoutes {
-    EventDAO eventDAO = EventDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
+    private EventDAO eventDAO;
+
+    public EventRoutes(EntityManagerFactory emf) {
+        this.eventDAO = EventDAO.getInstance(emf);
+    }
+
     public EndpointGroup eventRoutes() {
         return () -> path("/events", () -> {
 
             // Create an event.
             post("/", ctx -> {
-                try {
-                    EventController.create(eventDAO).handle(ctx);
-                } catch (APIException e) {
-                    ctx.status(e.getStatusCode()).result(e.getMessage());
-                }
-            }
-            ,Role.INSTRUCTOR,Role.ADMIN
+                        try {
+                            EventController.create(eventDAO).handle(ctx);
+                        } catch (APIException e) {
+                            ctx.status(e.getStatusCode()).result(e.getMessage());
+                        }
+                    }
+                    , Role.INSTRUCTOR, Role.ADMIN
             );
 
             // Get all events
             get("/", ctx -> {
-                try {
-                    EventController.readAll(eventDAO).handle(ctx);
-                } catch (APIException e) {
-                    ctx.status(e.getStatusCode()).result(e.getMessage());
-                }
-            }
-            ,Role.ANYONE
+                        try {
+                            EventController.readAll(eventDAO).handle(ctx);
+                        } catch (APIException e) {
+                            ctx.status(e.getStatusCode()).result(e.getMessage());
+                        }
+                    }
+                    , Role.ANYONE
             );
 
             // Get a specific event by id
             get("/{id}", ctx -> {
-                try {
-                    EventController.readById(eventDAO).handle(ctx);
-                } catch (APIException e) {
-                    ctx.status(e.getStatusCode()).result(e.getMessage());
-                }
-            }
-            ,Role.ANYONE
+                        try {
+                            EventController.readById(eventDAO).handle(ctx);
+                        } catch (APIException e) {
+                            ctx.status(e.getStatusCode()).result(e.getMessage());
+                        }
+                    }
+                    , Role.ANYONE
             );
 
             // Update a specific event by id
             put("/{id}", ctx -> {
-                try {
-                    EventController.update(eventDAO).handle(ctx);
-                } catch (APIException e) {
-                    ctx.status(e.getStatusCode()).result(e.getMessage());
-                }
-            }
-            ,Role.INSTRUCTOR,Role.ADMIN
+                        try {
+                            EventController.update(eventDAO).handle(ctx);
+                        } catch (APIException e) {
+                            ctx.status(e.getStatusCode()).result(e.getMessage());
+                        }
+                    }
+                    , Role.INSTRUCTOR, Role.ADMIN
             );
 
             // Delete existing event by id
             delete("/{id}", ctx -> {
-                try {
-                    EventController.delete(eventDAO).handle(ctx);
-                } catch (APIException e) {
-                    ctx.status(e.getStatusCode()).result(e.getMessage());
-                }
-            }
-            ,Role.ADMIN
+                        try {
+                            EventController.delete(eventDAO).handle(ctx);
+                        } catch (APIException e) {
+                            ctx.status(e.getStatusCode()).result(e.getMessage());
+                        }
+                    }
+                    , Role.ADMIN
             );
 
             // Filter events by category
             get("/categories/{category}", ctx -> {
-                try {
-                    EventController.readByCategory(eventDAO).handle(ctx);
-                } catch (APIException e) {
-                    ctx.status(e.getStatusCode()).result(e.getMessage());
-                }
-            }
-            ,Role.ANYONE
+                        try {
+                            EventController.readByCategory(eventDAO).handle(ctx);
+                        } catch (APIException e) {
+                            ctx.status(e.getStatusCode()).result(e.getMessage());
+                        }
+                    }
+                    , Role.ANYONE
             );
 
             // Filter events by status
             get("/status/{status}", ctx -> {
-                try {
-                    EventController.readByStatus(eventDAO).handle(ctx);
-                } catch (APIException e) {
-                    ctx.status(e.getStatusCode()).result(e.getMessage());
-                }
-            }
-            ,Role.ANYONE
+                        try {
+                            EventController.readByStatus(eventDAO).handle(ctx);
+                        } catch (APIException e) {
+                            ctx.status(e.getStatusCode()).result(e.getMessage());
+                        }
+                    }
+                    , Role.ANYONE
             );
         });
     }

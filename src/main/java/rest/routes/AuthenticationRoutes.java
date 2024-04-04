@@ -11,11 +11,13 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 public class AuthenticationRoutes {
     private static UserDAO userDAO = UserDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
     private static AuthDAO authDAO = AuthDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
+
     public static EndpointGroup authBefore() {
         return () -> {
             path("/", () -> before(AuthController.authenticate()));
         };
     }
+
     public static EndpointGroup getAuthRoutes() {
         return () -> {
             path("/auth", () -> {

@@ -12,7 +12,7 @@ import rest.routes.UserRoutes;
 public class Application {
     public static void main(String[] args) {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
-        EventRoutes eventRoutes = new EventRoutes();
+        EventRoutes eventRoutes = new EventRoutes(emf);
         UserRoutes userRoutes = new UserRoutes();
         ApplicationConfig app = ApplicationConfig.getInstance();
         app.initiateServer()
