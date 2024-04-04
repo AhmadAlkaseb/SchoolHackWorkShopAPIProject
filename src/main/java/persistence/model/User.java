@@ -2,9 +2,7 @@ package persistence.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.HashSet;
@@ -13,6 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class User {
@@ -33,7 +32,8 @@ public class User {
     private int phone;
 
     @Column(nullable = false, columnDefinition = "student")
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @ToString.Exclude
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "rolename", referencedColumnName = "rolename"))
@@ -67,14 +67,12 @@ public class User {
         }
     }
 
-
     public void removeEvent(Event event) {
         if (event != null) {
             events.remove(event);
             event.getUsers().remove(this);
         }
     }
-
 
     public void addRole(Role role){
         if(role != null){
@@ -85,11 +83,9 @@ public class User {
 
     public Set<String> getRolesAsStrings(){
         Set<String> roleStringSet = new HashSet<>();
-        this.getRoles().forEach(role -> roleStringSet.add(role.toString()));
+        this.getRoles().forEach(role -> roleStringSet.add(role.getRolename()));
         return roleStringSet;
     }
-
-
     @Override
     public String toString() {
         return "User - " +
@@ -98,5 +94,9 @@ public class User {
                 ", email = " + email +
                 ", password = " + password +
                 ", phone = " + phone;
+    }
+
+    public void setPassword(String password) {
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }

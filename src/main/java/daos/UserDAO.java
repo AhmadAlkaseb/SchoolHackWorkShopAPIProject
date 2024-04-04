@@ -38,15 +38,12 @@ public class UserDAO extends AbstractDAO
     }
 
     public User create(User user){
-        EntityManager em = emf.createEntityManager();
-        try {
+        try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-            user.addRole(em.find(Role.class,"student"));
+            user.addRole(em.find(Role.class, "student"));
             em.persist(user);
             em.getTransaction().commit();
             return user;
-        } finally {
-            em.close();
         }
     }
 }

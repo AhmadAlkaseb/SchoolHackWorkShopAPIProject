@@ -10,6 +10,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class UserDTO
 {
     private int id;
@@ -18,6 +19,7 @@ public class UserDTO
     private String password;
     private int phone;
     private Set<String> roles;
+
 
     public UserDTO(String email, String password) {
         this.email = email;
@@ -29,14 +31,16 @@ public class UserDTO
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
-        this.password = user.getPassword();
         this.phone = user.getPhone();
         this.roles = user.getRolesAsStrings();
     }
 
-    public UserDTO(String email, Set<String> roles)
+    public UserDTO(int id, String name, String email, int phone, Set<String> roles)
     {
+        this.id = id;
+        this.name = name;
         this.email = email;
+        this.phone = phone;
         this.roles = roles;
     }
 }

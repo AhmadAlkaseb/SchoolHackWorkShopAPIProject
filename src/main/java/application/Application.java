@@ -7,12 +7,14 @@ import persistence.model.User;
 import rest.config.ApplicationConfig;
 import rest.routes.AuthenticationRoutes;
 import rest.routes.EventRoutes;
-import rest.routes.UserRoutes;
 import rest.routes.RegistrationRoutes;
+import rest.routes.UserRoutes;
 
 public class Application {
     public static void main(String[] args) {
-        EventRoutes eventRoutes = new EventRoutes();
+
+        EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
+        EventRoutes eventRoutes = new EventRoutes(emf);
         UserRoutes userRoutes = new UserRoutes();
         RegistrationRoutes regRoutes = new RegistrationRoutes();
         ApplicationConfig app = ApplicationConfig.getInstance();
@@ -23,6 +25,8 @@ public class Application {
                 .setRoute(userRoutes.userRoutes())
                 .setRoute(regRoutes.registrationRoutes())
                 .setRoute(AuthenticationRoutes.getAuthRoutes())
-                .checkSecurityRoles();
+                .checkSecurityRoles()
+                .setRoute(AuthenticationRoutes.authBefore());
+
     }
 }

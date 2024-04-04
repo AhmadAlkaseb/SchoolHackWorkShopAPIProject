@@ -16,39 +16,40 @@ https://rb.gy/t9pwu6
 
 ### User stories & status
 
-Student Stories
-As a user, I want to see all the events/workshops that are going to be held.
-STATUS:
-As a user, I want to see the details of a specific event/workshop.
-STATUS:
-As a user, I want to register for an event/workshop.
-STATUS:
-As a user, I want to cancel my registration for an event/workshop.
-STATUS:
+Student Stories  
+As a user, I want to see all the events/workshops that are going to be held.  
+STATUS:  
+As a user, I want to see the details of a specific event/workshop.  
+STATUS:  
+As a user, I want to register for an event/workshop.  
+STATUS:  
+As a user, I want to cancel my registration for an event/workshop.  
+STATUS:  
 As a user, I want to be able to reset my password.
-(How can you make sure that the user is the one who is resetting the password?)
+(How can you make sure that the user is the one who is resetting the password?)  
 STATUS:
 
 Instructor Stories  
-As an instructor, I want to create a new event/workshop.
-STATUS:
-As an instructor, I want to update an event/workshop.
-STATUS:
-As an instructor, I want to cancel an event/workshop.
-STATUS:
-As an instructor, I want to see all the events/workshops that I am teaching.
-STATUS:
-As an instructor, I want to see all the registrations for an event/workshop.STATUS:
+As an instructor, I want to create a new event/workshop.  
+STATUS:  
+As an instructor, I want to update an event/workshop.  
+STATUS:  
+As an instructor, I want to cancel an event/workshop.  
+STATUS:  
+As an instructor, I want to see all the events/workshops that I am teaching.  
+STATUS:  
+As an instructor, I want to see all the registrations for an event/workshop.  
+STATUS:  
 
-Admin Stories
-As an admin, I want to see all the users.
-STATUS:
-As an admin, I want to see all the events/workshops.
-STATUS:
+Admin Stories  
+As an admin, I want to see all the users.  
+STATUS:  
+As an admin, I want to see all the events/workshops.  
+STATUS:  
 
-General Stories
-Implement a way to filter events by category and status.
-STATUS:
+General Stories  
+Implement a way to filter events by category and status.  
+STATUS:  
 
 ### API Documentation
 
@@ -84,16 +85,4 @@ STATUS:
 
 Link:
 
-Test coverage of:
-
-EventRoutes class:
-Status:
-
-AuthenticationRoutes class:
-Status:
-
-UserRoutes class:
-Status:
-
-RegistrationsRoutes class:
-Status:
+Test coverage of controllers & daos.
