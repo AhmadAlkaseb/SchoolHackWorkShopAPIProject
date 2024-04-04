@@ -1,15 +1,12 @@
 package rest.routes;
 
-import daos.UserDAO;
 import dtos.EventDTO;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 import persistence.config.HibernateConfig;
 import persistence.model.Event;
-import persistence.model.User;
 import rest.config.ApplicationConfig;
 
 import java.time.LocalDate;
@@ -147,5 +144,21 @@ class EventRoutesTest {
                 .body("createdAt", contains(2024, 4, 4))
                 .body("updatedAt", contains(2024, 4, 4))
                 .body("deletedAt", nullValue());
+    }
+
+    @Test
+    @DisplayName("Retrieving specific events by category.")
+    public void testingSpecificEventsByCategory() {
+        int expectedRoomsSize = 1;
+        List<EventDTO> listFound = RestAssured
+                .given()
+                .when()
+                .get("/events/categories/{category}", "course")
+                .then()
+                .extract()
+                .body()
+                .jsonPath().getList("", EventDTO.class);
+        assertFalse(listFound.isEmpty());
+        assertEquals(expectedRoomsSize, listFound.size());
     }
 }
