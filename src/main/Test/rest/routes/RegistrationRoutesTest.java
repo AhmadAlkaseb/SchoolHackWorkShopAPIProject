@@ -133,6 +133,27 @@ class RegistrationRoutesTest {
     }
 
     @Test
+    @DisplayName("Retrieval of all registrations method")
+    public void test2() {
+
+        int expectedSize = 1; //der er 8 registreringer i beforeAll
+        int expectedUserId = user1.getId();
+        String expectedEventName = event1.getDescription();
+
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get("/registrations/all-by-eventid/1")
+                .then()
+                .statusCode(200)
+                .body("[0].userId", equalTo(expectedUserId))
+                .body("[0].eventName", equalTo(expectedEventName))
+                .body("size()", is(expectedSize))
+                .extract().response().prettyPrint();
+    }
+
+    @Test
     @DisplayName("Retrieval of a single registration by event id and user id")
     public void test3() {
 
