@@ -35,7 +35,7 @@ public class RegistrationController {
     public static Handler readAllByEvent(RegistrationDAO registrationDAO) {
         return ctx -> {
 
-            int eventId = Integer.parseInt(ctx.pathParam("event_id"));
+            int eventId = Integer.parseInt(ctx.pathParam("event-id"));
 
             List<Registration> registrations = registrationDAO.readAllByEvent(eventId);
             List<RegistrationDTO> registrationDTOS = new ArrayList<>();

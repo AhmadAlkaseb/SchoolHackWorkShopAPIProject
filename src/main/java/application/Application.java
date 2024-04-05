@@ -1,5 +1,6 @@
 package application;
 
+import daos.UserDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import persistence.config.HibernateConfig;
@@ -33,6 +34,7 @@ public class Application {
                 .checkSecurityRoles()
                 .setRoute(AuthenticationRoutes.authBefore());
 
+        UserDAO dao = UserDAO.getInstance(emf);
 
         User user1 = new User("Hans", "hans@mail.com", "password", 12345678);
         User user2 = new User("Martin", "martin@mail.com", "password", 12345678);
@@ -52,16 +54,11 @@ public class Application {
         user4.addEvent(event4);
         user5.addEvent(event5);
 
-        try (EntityManager em = emf.createEntityManager()) {
-            em.getTransaction().begin();
-
-            em.persist(user1);
-            em.persist(user2);
-            em.persist(user3);
-            em.persist(user4);
-            em.persist(user5);
-            em.getTransaction().commit();
-        }
+        dao.create(user1);
+        dao.create(user2);
+        dao.create(user3);
+        dao.create(user4);
+        dao.create(user5);
 
     }
 }

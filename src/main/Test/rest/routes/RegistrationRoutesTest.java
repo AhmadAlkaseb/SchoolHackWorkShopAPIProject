@@ -1,5 +1,6 @@
 package rest.routes;
 
+import daos.RegistrationDAO;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jakarta.persistence.EntityManager;
@@ -7,6 +8,7 @@ import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 import persistence.config.HibernateConfig;
 import persistence.model.Event;
+import persistence.model.Registration;
 import persistence.model.User;
 import rest.config.ApplicationConfig;
 
@@ -22,6 +24,8 @@ class RegistrationRoutesTest {
     private static ApplicationConfig app;
     private static int port = 7007;
     private static RegistrationRoutes registrationRoutes = new RegistrationRoutes();
+
+    RegistrationDAO dao = RegistrationDAO.getInstance(emf);
 
 
     private static User user1;
@@ -64,6 +68,20 @@ class RegistrationRoutesTest {
     @BeforeEach
     void setUpBeforeEach() {
 
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+
+            // Truncate tabeller - rigtig tabel navn skal benyttes - alt indhold slettes.
+            em.createNativeQuery("TRUNCATE TABLE registrations CASCADE").executeUpdate();
+            em.createNativeQuery("TRUNCATE TABLE events CASCADE").executeUpdate();
+            em.createNativeQuery("TRUNCATE TABLE users CASCADE").executeUpdate();
+
+            // Reset sequence
+//            em.createNativeQuery("ALTER SEQUENCE registrations_id_seq RESTART WITH 1").executeUpdate();
+
+            em.getTransaction().commit();
+        }
+
         user1 = new User("Hans", "hans@mail.com", "password", 12345678);
         user2 = new User("Martin", "martin@mail.com", "password", 12345678);
         user3 = new User("Tom", "tom@mail.com", "password", 12345678);
@@ -98,21 +116,15 @@ class RegistrationRoutesTest {
     void tearDownAfterEach() {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
-
-            // Truncate tabeller - rigtig tabel navn skal benyttes - alt indhold slettes.
-            em.createNativeQuery("TRUNCATE TABLE registrations CASCADE").executeUpdate();
-            em.createNativeQuery("TRUNCATE TABLE events CASCADE").executeUpdate();
-            em.createNativeQuery("TRUNCATE TABLE users CASCADE").executeUpdate();
-
-            // Reset sequence
-//            em.createNativeQuery("ALTER SEQUENCE registrations_id_seq RESTART WITH 1").executeUpdate();
-
+            em.createQuery("DELETE FROM Registration ").executeUpdate();
+            em.createQuery("DELETE FROM Event ").executeUpdate();
+            em.createQuery("DELETE FROM User ").executeUpdate();
             em.getTransaction().commit();
         }
     }
 
     @Test
-    @DisplayName("Retrieval of all registrations method")
+    @DisplayName("Retrieval of all registrations")
     public void test1() {
 
         int expectedSize = 5; //der er 8 registreringer i beforeAll
@@ -124,7 +136,7 @@ class RegistrationRoutesTest {
                 .contentType(ContentType.JSON)
                 .when()
                 .get("/registrations")
-                .then()
+                .then().log().all()
                 .statusCode(200)
                 .body("[0].userId", equalTo(expectedUserId))
                 .body("[0].eventName", equalTo(expectedEventName))
@@ -133,18 +145,19 @@ class RegistrationRoutesTest {
     }
 
     @Test
-    @DisplayName("Retrieval of all registrations method")
+    @DisplayName("Retrieval of all registrations by specific event")
     public void test2() {
 
         int expectedSize = 1; //der er 8 registreringer i beforeAll
         int expectedUserId = user1.getId();
         String expectedEventName = event1.getDescription();
 
+
         RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .when()
-                .get("/registrations/all-by-eventid/1")
+                .get("/registrations/all-by-eventid/{event-id}",event1.getId())
                 .then()
                 .statusCode(200)
                 .body("[0].userId", equalTo(expectedUserId))
@@ -158,22 +171,18 @@ class RegistrationRoutesTest {
     public void test3() {
 
         int expectedSize = 5; //der er 5 registreringer i beforeAll
-        int expectedUserId = user1.getId();
         String expectedEventName = event1.getDescription();
-
-        System.out.println(expectedUserId);
+        Registration reg = dao.getRegistrationByNameAndEvent(user1.getId(), event1.getId());
 
         RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
                 .when()
-                .get("/registrations/372")
+                .get("/registrations/{id}", reg.getId())
                 .then()
                 .log().all()
                 .statusCode(200)
                 .extract().response().prettyPrint();
-
-        System.out.println(expectedUserId);
 
     }
 }
