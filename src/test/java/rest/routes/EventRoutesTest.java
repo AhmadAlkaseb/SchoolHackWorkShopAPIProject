@@ -40,6 +40,7 @@ class EventRoutesTest {
     @AfterAll
     public static void closeDown() {
         emf.close();
+        applicationConfig.stopServer();
     }
 
     @BeforeEach
