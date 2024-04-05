@@ -24,7 +24,7 @@ POST http://localhost:7007/api/events
 }
 
 ### Update an event
-PUT http://localhost:7007/api/events/9
+PUT http://localhost:7007/api/events/599
 
 {
 "title": "Ahmad"

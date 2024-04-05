@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column (nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, unique = true)
@@ -67,14 +67,14 @@ public class User {
         }
     }
 
-    public void addRole(Role role){
-        if(role != null){
+    public void addRole(Role role) {
+        if (role != null) {
             roles.add(role);
             role.getUsers().add(this);
         }
     }
 
-    public Set<String> getRolesAsStrings(){
+    public Set<String> getRolesAsStrings() {
         Set<String> roleStringSet = new HashSet<>();
         this.getRoles().forEach(role -> roleStringSet.add(role.getRolename()));
         return roleStringSet;

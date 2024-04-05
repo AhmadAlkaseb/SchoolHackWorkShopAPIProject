@@ -19,9 +19,9 @@ public class Application {
                 .startServer(7007)
                 .setExceptionHandlers()
                 .setRoute(eventRoutes.eventRoutes())
-                .setRoute(AuthenticationRoutes.getAuthRoutes())
+                //.setRoute(AuthenticationRoutes.get())
                 .setRoute(userRoutes.userRoutes())
-                .setRoute(AuthenticationRoutes.authBefore())
+                //.setRoute(AuthenticationRoutes.authBefore())
                 .checkSecurityRoles();
 
     }
