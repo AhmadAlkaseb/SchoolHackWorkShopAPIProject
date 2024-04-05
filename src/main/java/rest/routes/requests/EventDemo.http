@@ -3,7 +3,7 @@ GET http://localhost:7007/api/events
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsQGxhaHkuZGsiLCJwaG9uZSI6NTM3MDI1MTAsInJvbGVzIjoic3R1ZGVudCIsImlzcyI6IlRlYW1MQUhZIiwibmFtZSI6InRlc3QiLCJpZCI6MTUwLCJleHAiOjE3MTIyNTI4NTIsImVtYWlsIjoibEBsYWh5LmRrIn0.C1Q73ZmIW82JUQZmPaBGS3X5DKZ6YC3wvvHrUcAfHNM
 
 ### Get a specific event by id
-GET http://localhost:7007/api/events/142
+GET http://localhost:7007/api/events/600
 
 ### Post an event
 POST http://localhost:7007/api/events
@@ -24,14 +24,14 @@ POST http://localhost:7007/api/events
 }
 
 ### Update an event
-PUT http://localhost:7007/api/events/599
+PUT http://localhost:7007/api/events/600
 
 {
-"title": "Ahmad"
+"title": "Test"
 }
 
 ### Delete an event by id
-DELETE http://localhost:7007/api/events/9
+DELETE http://localhost:7007/api/events/604
 
 ### Filter by category
 GET http://localhost:7007/api/events/categories/talk
