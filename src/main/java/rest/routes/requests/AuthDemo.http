@@ -2,8 +2,8 @@
 POST http://localhost:7007/api/auth/login
 
 {
-"email":"l@lahy.dk",
-"password":"1234qwer"
+"email":"hans@mail.com",
+"password":"password"
 }
 
 ### Register new user

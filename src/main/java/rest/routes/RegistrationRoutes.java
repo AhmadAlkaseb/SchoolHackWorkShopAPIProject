@@ -6,15 +6,21 @@ import daos.RegistrationDAO;
 import daos.UserDAO;
 import exceptions.APIException;
 import io.javalin.apibuilder.EndpointGroup;
+import jakarta.persistence.EntityManagerFactory;
 import persistence.config.HibernateConfig;
-import persistence.model.User;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class RegistrationRoutes {
-    RegistrationDAO regDAO = RegistrationDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
-    EventDAO eventDAO = EventDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
-    UserDAO userDAO = UserDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
+    RegistrationDAO regDAO;
+    EventDAO eventDAO;
+    UserDAO userDAO;
+
+    public RegistrationRoutes(EntityManagerFactory emf){
+        regDAO = RegistrationDAO.getInstance(emf);
+        eventDAO = EventDAO.getInstance(emf);
+        userDAO = UserDAO.getInstance(emf);
+    }
 
     public EndpointGroup registrationRoutes() {
         return () -> path("/registrations", () -> {

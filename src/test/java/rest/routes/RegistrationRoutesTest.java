@@ -22,10 +22,10 @@ import static org.hamcrest.Matchers.*;
 
 class RegistrationRoutesTest {
 
-    private static EntityManagerFactory emf;
+    private static EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(true);
     private static ApplicationConfig app;
     private static int port = 7007;
-    private static RegistrationRoutes registrationRoutes = new RegistrationRoutes();
+    private static RegistrationRoutes registrationRoutes = new RegistrationRoutes(emf);
 
     RegistrationDAO dao = RegistrationDAO.getInstance(emf);
 
@@ -46,22 +46,15 @@ class RegistrationRoutesTest {
     static void setUp() {
         RestAssured.baseURI = "http://localhost:7007/api";
 
-        emf = HibernateConfig.getEntityManagerFactoryConfig(true);
-
+//        emf = HibernateConfig.getEntityManagerFactoryConfig(true);
         app = ApplicationConfig.getInstance();
         app.initiateServer()
                 .startServer(port)
                 .setExceptionHandlers()
-                .setRoute(registrationRoutes.registrationRoutes())
-                .setRoute(AuthenticationRoutes.getAuthRoutes())
-                .setRoute(AuthenticationRoutes.authBefore())
-                .checkSecurityRoles();
-
-
-//        user1.addEvent(event2);
-//        user3.addEvent(event4);
-//        user5.addEvent(event1);
-
+                .setRoute(registrationRoutes.registrationRoutes());
+//                .setRoute(authenticationRoutes.getAuthRoutes())
+//                .setRoute(authenticationRoutes.authBefore())
+//                .checkSecurityRoles();
 
     }
 
@@ -73,14 +66,6 @@ class RegistrationRoutesTest {
 
     @BeforeEach
     void setUpBeforeEach() {
-
-        try (EntityManager em = emf.createEntityManager()) {
-            em.getTransaction().begin();
-            em.createQuery("DELETE FROM Registration ").executeUpdate();
-            em.createQuery("DELETE FROM Event ").executeUpdate();
-            em.createQuery("DELETE FROM User ").executeUpdate();
-            em.getTransaction().commit();
-        }
 
         UserDAO dao = UserDAO.getInstance(emf);
 
