@@ -26,10 +26,8 @@ class RegistrationRoutesTest {
     private static ApplicationConfig app;
     private static int port = 7007;
     private static RegistrationRoutes registrationRoutes = new RegistrationRoutes(emf);
-
-    RegistrationDAO dao = RegistrationDAO.getInstance(emf);
-
-
+    private UserDAO userDAO = UserDAO.getInstance(emf);
+    private RegistrationDAO registrationDAO = RegistrationDAO.getInstance(emf);
     private static User user1;
     private static User user2;
     private static User user3;
@@ -67,8 +65,6 @@ class RegistrationRoutesTest {
     @BeforeEach
     void setUpBeforeEach() {
 
-        UserDAO dao = UserDAO.getInstance(emf);
-
         user1 = new User("Hans", "hans@mail.com", "password", 12345678);
         user2 = new User("Martin", "martin@mail.com", "password", 12345678);
         user3 = new User("Tom", "tom@mail.com", "password", 12345678);
@@ -91,11 +87,12 @@ class RegistrationRoutesTest {
         user4.addEvent(event4);
         user5.addEvent(event5);
 
-        dao.create(user1);
-        dao.create(user2);
-        dao.create(user3);
-        dao.create(user4);
-        dao.create(user5);
+        userDAO.create(user1);
+        userDAO.create(user2);
+        userDAO.create(user3);
+        userDAO.create(user3);
+        userDAO.create(user4);
+        userDAO.create(user5);
     }
 
     @AfterEach
@@ -160,7 +157,7 @@ class RegistrationRoutesTest {
 
         int expectedSize = 5; //der er 5 registreringer i beforeAll
         String expectedEventName = event1.getDescription();
-        Registration reg = dao.getRegistrationByNameAndEvent(user1.getId(), event1.getId());
+        Registration reg = registrationDAO.getRegistrationByNameAndEvent(user1.getId(), event1.getId());
         User user = user1;
         Event event = event1;
         double eventDuration = event.getDuration();
