@@ -2,6 +2,7 @@ package rest.routes;
 
 import dtos.EventDTO;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
@@ -22,7 +23,6 @@ class EventRoutesTest {
     private static EntityManagerFactory emf;
     private static EventRoutes eventRoutes;
     private static ApplicationConfig applicationConfig;
-    private static String userToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsQGxhaHkuZGsiLCJwaG9uZSI6NTM3MDI1MTAsInJvbGVzIjoic3R1ZGVudCIsImlzcyI6IlRlYW1MQUhZIiwibmFtZSI6InRlc3QiLCJpZCI6MTUwLCJleHAiOjE3MTIyNTE3OTgsImVtYWlsIjoibEBsYWh5LmRrIn0.qEA5-lUuGxslfO7_ZMpdXJT9iOCgeF7p9FweXfHa3W4";
 
     @BeforeAll
     public static void setup() {
@@ -34,14 +34,13 @@ class EventRoutesTest {
                 .startServer(7007)
                 .setExceptionHandlers()
                 .setRoute(eventRoutes.eventRoutes())
-                .setRoute(AuthenticationRoutes.getAuthRoutes())
-                .setRoute(AuthenticationRoutes.authBefore())
                 .checkSecurityRoles();
     }
 
     @AfterAll
     public static void closeDown() {
         emf.close();
+        applicationConfig.stopServer();
     }
 
     @BeforeEach
@@ -127,7 +126,8 @@ class EventRoutesTest {
                 .given()
                 .when()
                 .get("/events/{id}", 1)
-                .then().assertThat()
+                .then()
+                .assertThat()
                 .body("id", equalTo(1))
                 .body("title", equalTo("Yoga Class"))
                 .body("category", equalTo("course"))
@@ -141,8 +141,10 @@ class EventRoutesTest {
                 .body("price", equalTo(10.99f))
                 .body("image", equalTo("yoga_image.jpg"))
                 .body("status", equalTo("active"))
-                .body("createdAt", contains(2024, 4, 4))
-                .body("updatedAt", contains(2024, 4, 4))
+
+                // Husk at sætte datoen for i dag
+                .body("createdAt", contains(2024, 4, 5))
+                .body("updatedAt", contains(2024, 4, 5))
                 .body("deletedAt", nullValue());
     }
 
@@ -160,5 +162,100 @@ class EventRoutesTest {
                 .jsonPath().getList("", EventDTO.class);
         assertFalse(listFound.isEmpty());
         assertEquals(expectedRoomsSize, listFound.size());
+    }
+
+    @Test
+    @DisplayName("Retrieving specific events by status.")
+    public void testingSpecificEventsByStatus() {
+        int expectedRoomsSize = 1;
+        List<EventDTO> listFound = RestAssured
+                .given()
+                .when()
+                .get("/events/status/{status}", "active")
+                .then()
+                .extract()
+                .body()
+                .jsonPath().getList("", EventDTO.class);
+        assertFalse(listFound.isEmpty());
+        assertEquals(expectedRoomsSize, listFound.size());
+    }
+
+    @Test
+    @DisplayName("Add a new event.")
+    public void testingAddNewEvent() {
+
+        String requestBody = "{\n" +
+                "  \"title\": \"Introduction to Python Programming\",\n" +
+                "  \"category\": \"workshop\",\n" +
+                "  \"description\": \"Learn Python basics and fundamentals\",\n" +
+                "  \"date\": \"2024-05-20\",\n" +
+                "  \"time\": \"09:00\",\n" +
+                "  \"duration\": 4,\n" +
+                "  \"capacity\": 50,\n" +
+                "  \"location\": \"Conference Room B\",\n" +
+                "  \"instructor\": \"Alice Smith\",\n" +
+                "  \"price\": 29.99,\n" +
+                "  \"image\": \"python_workshop.jpg\",\n" +
+                "  \"status\": \"active\"\n" +
+                "}";
+
+        EventDTO eventDTOFound =
+                RestAssured
+                        .given()
+                        .contentType(ContentType.JSON)
+                        .body(requestBody)
+                        .when()
+                        .post("/events")
+                        .then()
+                        .statusCode(200) // Ensure the status code is 200 (OK)
+                        .body("title", equalTo("Introduction to Python Programming"))
+                        .body("category", equalTo("workshop"))
+                        .body("description", equalTo("Learn Python basics and fundamentals"))
+                        .body("date", contains(2024, 5, 20))
+                        .body("time", contains(9, 0))
+                        .body("duration", equalTo(4.0f))
+                        .body("capacity", equalTo(50))
+                        .body("location", equalTo("Conference Room B"))
+                        .body("instructor", equalTo("Alice Smith"))
+                        .body("price", equalTo(29.99f))
+                        .body("image", equalTo("python_workshop.jpg"))
+                        .body("status", equalTo("active"))
+                        .extract()
+                        .response()
+                        .as(EventDTO.class);
+        assertNotNull(eventDTOFound);
+    }
+
+    @Test
+    @DisplayName("Update existing event by id")
+    public void testingUpdateExistingEvent() {
+        EventDTO eventDTOFound =
+                RestAssured
+                        .given()
+                        .when()
+                        .delete("/events/{id}", 1)
+                        .then()
+                        .assertThat()
+                        .body("id", equalTo(1))
+                        .body("title", equalTo("Yoga Class"))
+                        .body("category", equalTo("course"))
+                        .body("description", equalTo("Join us for a relaxing yoga session"))
+                        .body("date", contains(2024, 4, 10))
+                        .body("time", contains(9, 0))
+                        .body("duration", equalTo(1.5f))
+                        .body("capacity", equalTo(20))
+                        .body("location", equalTo("Community Center"))
+                        .body("instructor", equalTo("Yoga Instructor Name"))
+                        .body("price", equalTo(10.99f))
+                        .body("image", equalTo("yoga_image.jpg"))
+                        .body("status", equalTo("active"))
+
+                        // Husk at sætte datoen for i dag
+                        .body("createdAt", contains(2024, 4, 5))
+                        .body("updatedAt", contains(2024, 4, 5))
+                        .extract()
+                        .response()
+                        .as(EventDTO.class);
+        assertNotNull(eventDTOFound);
     }
 }

@@ -47,7 +47,6 @@ public class Event {
 
     @Column(nullable = false)
     private String location;
-    //todo: burde det ikke være en User?
 
     @Column(nullable = false)
     private String instructor;

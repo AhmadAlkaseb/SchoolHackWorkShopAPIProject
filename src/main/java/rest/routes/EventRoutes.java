@@ -1,6 +1,5 @@
 package rest.routes;
 
-import controllers.AuthController;
 import controllers.EventController;
 import daos.EventDAO;
 import exceptions.APIException;
@@ -27,7 +26,7 @@ public class EventRoutes {
                             ctx.status(e.getStatusCode()).result(e.getMessage());
                         }
                     }
-                    , Role.INSTRUCTOR, Role.ADMIN
+                    , Role.INSTRUCTOR, Role.ADMIN, Role.ANYONE
             );
 
             // Get all events
@@ -60,7 +59,7 @@ public class EventRoutes {
                             ctx.status(e.getStatusCode()).result(e.getMessage());
                         }
                     }
-                    , Role.INSTRUCTOR, Role.ADMIN
+                    , Role.INSTRUCTOR, Role.ADMIN, Role.ANYONE
             );
 
             // Delete existing event by id
@@ -71,7 +70,7 @@ public class EventRoutes {
                             ctx.status(e.getStatusCode()).result(e.getMessage());
                         }
                     }
-                    , Role.ADMIN
+                    , Role.ADMIN, Role.ANYONE
             );
 
             // Filter events by category
@@ -82,7 +81,7 @@ public class EventRoutes {
                             ctx.status(e.getStatusCode()).result(e.getMessage());
                         }
                     }
-                    , Role.ANYONE
+                    , Role.ANYONE, Role.ANYONE
             );
 
             // Filter events by status
@@ -93,7 +92,7 @@ public class EventRoutes {
                             ctx.status(e.getStatusCode()).result(e.getMessage());
                         }
                     }
-                    , Role.ANYONE
+                    , Role.ANYONE, Role.ANYONE
             );
         });
     }

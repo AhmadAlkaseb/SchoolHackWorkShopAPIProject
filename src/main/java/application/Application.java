@@ -60,5 +60,6 @@ public class Application {
         dao.create(user4);
         dao.create(user5);
 
+
     }
 }
