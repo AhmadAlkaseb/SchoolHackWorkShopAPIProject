@@ -1,20 +1,12 @@
 package application;
 
-import daos.UserDAO;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import persistence.config.HibernateConfig;
-import persistence.model.Event;
-import persistence.model.Role;
-import persistence.model.User;
 import rest.config.ApplicationConfig;
 import rest.routes.AuthenticationRoutes;
 import rest.routes.EventRoutes;
 import rest.routes.RegistrationRoutes;
 import rest.routes.UserRoutes;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class Application {
     public static void main(String[] args) {

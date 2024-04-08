@@ -1,9 +1,11 @@
 package controllers;
 
+import daos.EventDAO;
 import daos.UserDAO;
 import dtos.UserDTO;
 import exceptions.APIException;
 import io.javalin.http.Handler;
+import persistence.model.Event;
 import persistence.model.User;
 
 import java.util.ArrayList;
@@ -12,6 +14,24 @@ import java.util.List;
 public class UserController {
 
 
+    public static Handler addUserToEvent(UserDAO userDAO, EventDAO eventDAO) {
+        return ctx ->{
+            int eventId = Integer.parseInt(ctx.pathParam("eventid"));
+            int userid = Integer.parseInt(ctx.pathParam("userid"));
+            //int userId = ctx.bodyAsClass(Integer.class);
+
+            User user = (User) userDAO.getById(userid);
+            Event event = (Event) eventDAO.getById(eventId);
+
+            if(user != null && event != null) {
+                user.addEvent(event);
+                userDAO.update(user);
+                ctx.json(user);
+            }else{
+                throw new APIException(404, "Registration of user to event was not possible, User og Event was not found ");
+            }
+        };
+    }
     public static Handler getAllUsers(UserDAO userDAO) {
         return ctx -> {
             List<User> userList = userDAO.getAllUsers();

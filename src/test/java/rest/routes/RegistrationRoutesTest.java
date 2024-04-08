@@ -1,8 +1,6 @@
 package rest.routes;
 
-import daos.EventDAO;
 import daos.RegistrationDAO;
-import daos.UserDAO;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import jakarta.persistence.EntityManager;
@@ -18,8 +16,8 @@ import rest.config.ApplicationConfig;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 
 class RegistrationRoutesTest {
 
@@ -27,41 +25,19 @@ class RegistrationRoutesTest {
     private static ApplicationConfig app;
     private static int port = 7007;
     private static RegistrationRoutes registrationRoutes = new RegistrationRoutes(emf);
-    private UserDAO userDAO = UserDAO.getInstance(emf);
     private RegistrationDAO registrationDAO = RegistrationDAO.getInstance(emf);
-    private EventDAO eventDAO = EventDAO.getInstance(emf);
     private static User user1;
-    private static User user2;
-    private static User user3;
-    private static User user4;
-    private static User user5;
     private static Event event1;
-    private static Event event2;
-    private static Event event3;
-    private static Event event4;
-    private static Event event5;
-
-    private static Registration registration1;
-    private static Registration registration2;
-    private static Registration registration3;
-    private static Registration registration4;
-    private static Registration registration5;
-
 
     @BeforeAll
     static void setUp() {
-        RestAssured.baseURI = "http://localhost:7007/api";
-
-//        emf = HibernateConfig.getEntityManagerFactoryConfig(true);
+        RestAssured.baseURI = "http://localhost:7007/api/registrations";
         app = ApplicationConfig.getInstance();
         app.initiateServer()
                 .startServer(port)
                 .setExceptionHandlers()
                 .setRoute(registrationRoutes.registrationRoutes());
-//                .setRoute(authenticationRoutes.getAuthRoutes())
-//                .setRoute(authenticationRoutes.authBefore())
-//                .checkSecurityRoles();
-
+        //.checkSecurityRoles();
     }
 
     @AfterAll
@@ -72,12 +48,10 @@ class RegistrationRoutesTest {
 
     @BeforeEach
     void setUpBeforeEach() {
-
         Role admin = new Role("admin");
         Role student = new Role("student");
         Role instructor = new Role("instructor");
-
-        try (EntityManager em = emf.createEntityManager()){
+        try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             em.persist(admin);
             em.persist(instructor);
@@ -85,32 +59,29 @@ class RegistrationRoutesTest {
             em.getTransaction().commit();
         }
 
-//        user1 = userDAO.create(new User("Hans", "hans@mail.com", "password", 12345678));
-//        user2 = userDAO.create(new User("Martin", "martin@mail.com", "password", 12345678));
-//        user3 = userDAO.create(new User("Tom", "tom@mail.com", "password", 12345678));
-//        user4 = userDAO.create(new User("Louise", "louise@mail.com", "password", 12345678));
-//        user5 = userDAO.create(new User("Helle", "helle@mail.com", "password", 12345678));
-
         user1 = new User("Hans", "hans@mail.com", "password", 12345678);
-
-        try (EntityManager em = emf.createEntityManager()){
+        try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             em.persist(user1);
             em.getTransaction().commit();
         }
 
-        event1 = (Event) eventDAO.create(new Event("Yoga for Beginners", Event.Category.workshop, "A relaxing introduction to yoga.", LocalDate.of(2024, 4, 3), LocalTime.of(18, 0), 1.5, 20, "Room 101", "John Doe", 10.0, "yoga.jpg", Event.Status.active));
-//        event2 = (Event) eventDAO.create(new Event("Advanced Pottery", Event.Category.course, "Sculpt and mold your way to mastery.", LocalDate.of(2024, 4, 4), LocalTime.of(17, 0), 2.0, 15, "Art Studio", "Jane Smith", 20.0, "pottery.jpg", Event.Status.active));
-//        event3 = (Event) eventDAO.create(new Event("Beginner's Guitar", Event.Category.talk, "Strum the strings with ease.", LocalDate.of(2024, 4, 5), LocalTime.of(19, 0), 1.0, 10, "Music Hall", "Alex Johnson", 15.0, "guitar.jpg", Event.Status.active));
-//        event4 = (Event) eventDAO.create(new Event("Digital Photography", Event.Category.workshop, "Capture the world in your lens.", LocalDate.of(2024, 4, 6), LocalTime.of(16, 0), 3.0, 25, "Photo Lab", "Maria Garcia", 30.0, "photography.jpg", Event.Status.active));
-//        event5 = (Event) eventDAO.create(new Event("Master Chef: Baking", Event.Category.course, "Bake like a pro.", LocalDate.of(2024, 4, 7), LocalTime.of(15, 0), 2.5, 30, "Kitchen", "Emily Davis", 25.0, "baking.jpg", Event.Status.active));
+        event1 = new Event("Yoga for Beginners", Event.Category.workshop, "A relaxing introduction to yoga.", LocalDate.of(2024, 4, 3), LocalTime.of(18, 0), 1.5, 20, "Room 101", "John Doe", 10.0, "yoga.jpg", Event.Status.active);
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            em.persist(event1);
+            em.getTransaction().commit();
+        }
 
-//        registration1 = (Registration) registrationDAO.create(new Registration(event1, user1));
-//        registration2 = (Registration) registrationDAO.create(new Registration(event2, user2));
-//        registration3 = (Registration) registrationDAO.create(new Registration(event3, user3));
-//        registration4 = (Registration) registrationDAO.create(new Registration(event4, user4));
-//        registration5 = (Registration) registrationDAO.create(new Registration(event5, user5));
 
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            Event event = em.find(Event.class, 1);
+            User user = em.find(User.class, 1);
+            Registration registration = new Registration(1,event, user);
+            em.persist(registration);
+            em.getTransaction().commit();
+        }
     }
 
     @AfterEach
@@ -125,15 +96,35 @@ class RegistrationRoutesTest {
         }
     }
 
+
     @Test
+    public void test0() {
+
+        try (EntityManager em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            em.persist(new Registration(em.find(Event.class, 1), em.find(User.class, 1)));
+            em.getTransaction().commit();
+        }
+        /*int userid = 1;
+        String response = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(userid)
+                .when()
+                .post("/add_user_to_event/{eventid}", 1)
+                .then()
+                .assertThat()
+                .extract()
+                .asString();
+
+        System.out.println("Response: " + response);*/
+    }
+
     @DisplayName("Retrieval of all registrations")
     public void test1() {
-
-
-
-        int expectedSize = 5; //der er 8 registreringer i beforeAll
+        int expectedSize = 5;
         int expectedUserId = user1.getId();
-        String expectedEventName = event1.getDescription();
+        String expectedEventName = event1.getTitle();
 
         RestAssured
                 .given()

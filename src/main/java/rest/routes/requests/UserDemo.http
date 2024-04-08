@@ -3,14 +3,14 @@ GET http://localhost:7007/api/users
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYW5zQG1haWwuY29tIiwicGhvbmUiOjEyMzQ1Njc4LCJyb2xlcyI6ImFkbWluIiwiaXNzIjoiVGVhbUxBSFkiLCJuYW1lIjoibGFzc2UiLCJpZCI6ODczLCJleHAiOjE3MTI1NjMyNTksImVtYWlsIjoiaGFuc0BtYWlsLmNvbSJ9.wP2rBmfnpyk3DwX0zLeoHNY1yTBeju2zhx14bppVDLM
 
 ### Get a single user.
-GET http://localhost:7007/api/users/3
+GET http://localhost:7007/api/users/874
 
 ### Create a new user
 POST http://localhost:7007/api/users
 
 {
 "name": "Lasse",
-"email": "lasse@lasse.dk",
+"email": "lasse@l33lasse.dk",
 "password" : "1234qwer",
 "phone": 53702510
 }
