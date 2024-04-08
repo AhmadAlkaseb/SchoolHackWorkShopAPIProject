@@ -32,7 +32,7 @@ public class RegistrationRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            },Role.ADMIN);
 
             // GET /registrations/:id: Get all registrations for an event.
             get("/all-by-eventid/{event-id}", ctx -> {
@@ -41,7 +41,7 @@ public class RegistrationRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }, Role.ADMIN);
 
             // GET /registrations/:id: Get a single registration.
             get("/{id}", ctx -> {
@@ -50,7 +50,7 @@ public class RegistrationRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }, Role.ADMIN);
 
             // POST /registrations/:id: Register a user for an event.
             post("/add_user_to_event/{eventid}", ctx -> {
@@ -59,7 +59,7 @@ public class RegistrationRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            }, Role.ADMIN);
 
             // DELETE /registrations/:id: Cancel a user's registration for an event.
             delete("/delete_user_from_event/{eventid}", ctx -> {
@@ -68,7 +68,7 @@ public class RegistrationRoutes {
                 } catch (APIException e) {
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
-            });
+            },Role.ADMIN);
         });
     }
 }

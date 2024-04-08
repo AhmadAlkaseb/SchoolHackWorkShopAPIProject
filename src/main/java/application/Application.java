@@ -18,15 +18,10 @@ import java.time.LocalTime;
 
 public class Application {
     public static void main(String[] args) {
-
-
-
-
-
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactoryConfig(false);
         AuthenticationRoutes authenticationRoutes = new AuthenticationRoutes(emf);
         EventRoutes eventRoutes = new EventRoutes(emf);
-        UserRoutes userRoutes = new UserRoutes();
+        UserRoutes userRoutes = new UserRoutes(emf);
         RegistrationRoutes regRoutes = new RegistrationRoutes(emf);
         ApplicationConfig app = ApplicationConfig.getInstance();
         app.initiateServer()

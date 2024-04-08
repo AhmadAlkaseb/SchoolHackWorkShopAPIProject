@@ -1,16 +1,25 @@
 package rest.routes;
 
 import controllers.UserController;
+import daos.EventDAO;
+import daos.RegistrationDAO;
 import daos.UserDAO;
 import exceptions.APIException;
 import io.javalin.apibuilder.EndpointGroup;
+import jakarta.persistence.EntityManagerFactory;
 import persistence.config.HibernateConfig;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class UserRoutes
 {
-    UserDAO userDAO = UserDAO.getInstance(HibernateConfig.getEntityManagerFactoryConfig(false));
+
+    private UserDAO userDAO;
+
+    public UserRoutes(EntityManagerFactory emf){
+        userDAO = UserDAO.getInstance(emf);
+
+    }
 
     public EndpointGroup userRoutes()
     {
@@ -29,7 +38,7 @@ public class UserRoutes
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.ADMIN
+            ,Role.ANYONE
             );
 
             // Get a single user.
@@ -44,7 +53,7 @@ public class UserRoutes
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.ADMIN
+            ,Role.ANYONE
             );
 
             // Create a new user.
@@ -59,7 +68,7 @@ public class UserRoutes
                     ctx.status(e.getStatusCode()).result(e.getMessage());
                 }
             }
-            ,Role.ADMIN
+            ,Role.ANYONE
             );
 
             // Update a user.

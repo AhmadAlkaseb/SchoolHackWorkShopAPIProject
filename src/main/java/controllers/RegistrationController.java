@@ -37,7 +37,7 @@ public class RegistrationController {
 
             int eventId = Integer.parseInt(ctx.pathParam("event-id"));
 
-            List<Registration> registrations = registrationDAO.readAllByEvent(eventId);
+            List<Registration> registrations = registrationDAO.readAllByEventId(eventId);
             List<RegistrationDTO> registrationDTOS = new ArrayList<>();
 
             for (Registration r : registrations){
@@ -104,11 +104,11 @@ public class RegistrationController {
             int eventId = Integer.parseInt(ctx.pathParam("eventid"));
             int userId = ctx.bodyAsClass(Integer.class);
 
-            Registration registration = registrationDAO.getRegistrationByNameAndEvent(userId, eventId);
+            Registration registration = registrationDAO.getRegistrationByUserIdAndEventId(userId, eventId);
 
             RegistrationDTO dto = convertToDTO(registration);
 
-            if(registration != null && registration != null) {
+            if(registration != null && dto != null) {
                 registrationDAO.delete(registration.getId());
                 ctx.json(dto);
             }else{

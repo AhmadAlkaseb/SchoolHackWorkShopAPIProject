@@ -1,7 +1,5 @@
 package daos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import dtos.RegistrationDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
@@ -25,7 +23,7 @@ public class RegistrationDAO extends AbstractDAO{
         return instance;
     }
 
-    public List<Registration> readAllByEvent(int eventId) {
+    public List<Registration> readAllByEventId(int eventId) {
         try (EntityManager em = emf.createEntityManager()) {
             TypedQuery<Registration> query = em.createQuery("SELECT r From Registration r JOIN r.event WHERE r.event.id =:eventId", Registration.class);
             query.setParameter("eventId", eventId);
@@ -40,7 +38,7 @@ public class RegistrationDAO extends AbstractDAO{
         }
     }
 
-    public Registration getRegistrationByNameAndEvent(int userId, int eventId){
+    public Registration getRegistrationByUserIdAndEventId(int userId, int eventId){
 
         try(EntityManager em = emf.createEntityManager()){
             TypedQuery<Registration> query = em.createQuery("Select r From Registration r " +

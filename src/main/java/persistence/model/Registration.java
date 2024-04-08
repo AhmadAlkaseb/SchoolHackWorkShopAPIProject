@@ -13,8 +13,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "registrations")
 public class Registration {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @ManyToOne
