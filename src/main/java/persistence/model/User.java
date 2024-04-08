@@ -67,6 +67,13 @@ public class User {
         }
     }
 
+    public void removeEvent(Event event) {
+        if (event != null) {
+            events.remove(event);
+            event.getUsers().remove(this);
+        }
+    }
+
     public void addRole(Role role) {
         if (role != null) {
             roles.add(role);

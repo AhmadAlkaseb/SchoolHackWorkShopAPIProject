@@ -1,17 +1,20 @@
 ### Get all the registrations
 GET http://localhost:7007/api/registrations
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYW5zQG1haWwuY29tIiwicGhvbmUiOjEyMzQ1Njc4LCJyb2xlcyI6ImFkbWluIiwiaXNzIjoiVGVhbUxBSFkiLCJuYW1lIjoibGFzc2UiLCJpZCI6ODczLCJleHAiOjE3MTI1NjMyNTksImVtYWlsIjoiaGFuc0BtYWlsLmNvbSJ9.wP2rBmfnpyk3DwX0zLeoHNY1yTBeju2zhx14bppVDLM
 
 ### Get registration by ID
-GET http://localhost:7007/api/registrations/1
+GET http://localhost:7007/api/registrations/392
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYW5zQG1haWwuY29tIiwicGhvbmUiOjEyMzQ1Njc4LCJyb2xlcyI6ImFkbWluIiwiaXNzIjoiVGVhbUxBSFkiLCJuYW1lIjoibGFzc2UiLCJpZCI6ODczLCJleHAiOjE3MTI1NjMyNTksImVtYWlsIjoiaGFuc0BtYWlsLmNvbSJ9.wP2rBmfnpyk3DwX0zLeoHNY1yTBeju2zhx14bppVDLM
 
 ### Add user to event
-POST http://localhost:7007/api/registrations/add_user_to_event/1
+POST http://localhost:7007/api/registrations/add_user_to_event/862
 
-4
+877
 
 ### Delete user from event
-DELETE http://localhost:7007/api/registrations/delete_user_from_event/1
+DELETE http://localhost:7007/api/registrations/delete_user_from_event/865
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYW5zQG1haWwuY29tIiwicGhvbmUiOjEyMzQ1Njc4LCJyb2xlcyI6ImFkbWluIiwiaXNzIjoiVGVhbUxBSFkiLCJuYW1lIjoibGFzc2UiLCJpZCI6ODczLCJleHAiOjE3MTI1NjMyNTksImVtYWlsIjoiaGFuc0BtYWlsLmNvbSJ9.wP2rBmfnpyk3DwX0zLeoHNY1yTBeju2zhx14bppVDLM
 
-3
+877
 
 ###

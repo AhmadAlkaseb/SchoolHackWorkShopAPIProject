@@ -31,6 +31,27 @@ public class RegistrationController {
                 .build();
     }
 
+
+    public static Handler readAllByEvent(RegistrationDAO registrationDAO) {
+        return ctx -> {
+
+            int eventId = Integer.parseInt(ctx.pathParam("event-id"));
+
+            List<Registration> registrations = registrationDAO.readAllByEventId(eventId);
+            List<RegistrationDTO> registrationDTOS = new ArrayList<>();
+
+            for (Registration r : registrations){
+                registrationDTOS.add(convertToDTO(r));
+            }
+
+            if (registrationDAO != null) {
+                ctx.json(registrationDTOS);
+            } else {
+                throw new APIException(404, "No registrations available. " + timestamp);
+            }
+        };
+    }
+
     public static Handler readAll(RegistrationDAO registrationDAO) {
         return ctx -> {
             List<Registration> registrations = registrationDAO.readAll();
@@ -83,11 +104,11 @@ public class RegistrationController {
             int eventId = Integer.parseInt(ctx.pathParam("eventid"));
             int userId = ctx.bodyAsClass(Integer.class);
 
-            Registration registration = registrationDAO.getRegistrationByNameAndEvent(userId, eventId);
+            Registration registration = registrationDAO.getRegistrationByUserIdAndEventId(userId, eventId);
 
             RegistrationDTO dto = convertToDTO(registration);
 
-            if(registration != null && registration != null) {
+            if(registration != null && dto != null) {
                 registrationDAO.delete(registration.getId());
                 ctx.json(dto);
             }else{

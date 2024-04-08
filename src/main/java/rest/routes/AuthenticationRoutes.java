@@ -19,13 +19,13 @@ public class AuthenticationRoutes {
         authDAO = AuthDAO.getInstance(emf);
     }
 
-    public  EndpointGroup authBefore() {
+    public EndpointGroup authBefore() {
         return () -> {
             path("/", () -> before(AuthController.authenticate()));
         };
     }
 
-    public  EndpointGroup getAuthRoutes() {
+    public EndpointGroup getAuthRoutes() {
         return () -> {
             path("/auth", () -> {
                 //Login route

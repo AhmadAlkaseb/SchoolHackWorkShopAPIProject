@@ -109,7 +109,7 @@ class EventRoutesTest {
         List<EventDTO> listFound = RestAssured
                 .given()
                 .when()
-                .get("/events")
+                .get("/events/")
                 .then()
                 .extract()
                 .body()
